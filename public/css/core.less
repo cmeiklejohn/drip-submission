@@ -19,7 +19,11 @@ html, body                                              { background: @canvas ur
   text-shadow: 0px 1px 1px @white;
 }
 
-.pane_header                                            { background: blue; padding: 20px; color: @white; }
+.pane_header                                            { background: blue; padding: 20px; color: @white; 
+  -webkit-border-radius: 5px 5px 0 0;
+     -moz-border-radius: 5px 5px 0 0;
+          border-radius: 5px 5px 0 0;
+}
 
 input[type="text"].error, input[type="password"].error, textarea.error { border-color: #C87872;
   .box-shadow(0 0 3px rgba(171, 41, 32, 0.25));
@@ -80,3 +84,4 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
 .select_repository {}
 
 /* --- show repository view --- */
+.pane_header .build_result                              { position: absolute; right: 10px; top: 10px; }
