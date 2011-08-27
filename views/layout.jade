@@ -32,7 +32,15 @@ html(lang="en")
     script(type="text/template", id="repository_list_template")
       aside(class="repository_list")
         ul
-      div(class="pane") Please select a repository on the left
+      div(class="pane") 
+        div(class="select_repository") Please select a repository on the left
+
+    script(type="text/template", id="repository_show_template")
+      div(class="pane_header") 
+        <%= name %>
+        div(class="build_result"
+
+    script(type="text/template", id="build_list_template")
 
   body
     != body
