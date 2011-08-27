@@ -38,6 +38,7 @@ app.configure('production', function(){
 
 var Index = require('./controllers/index.js');
 app.get('/', Index.index);
+app.get('/about', Index.about);
 
 // Blitz.io
 app.get('/mu-3775f757-f1a90d82-e1907dc9-8bc0a3c0', function(request, response) { 
