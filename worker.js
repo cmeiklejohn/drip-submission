@@ -117,8 +117,12 @@ var Jobs = {
       exit: function(spawn,name,next) {
         spawn.on('exit', function (code) {
           console.log('exit '+name+' ['+workingDir+'] code: ' + code);
-          
-          build.output = outputBuffer.join('');
+         
+          // Temporarily disable outputBuffer saving into the mongo
+          // document as it might overload the document size and is
+          // super slow.
+          //
+          // build.output = outputBuffer.join('');
           buildRepository.save(function (err) { if (err) throw err; });
           
           if(code === 0) {
