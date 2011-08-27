@@ -12,6 +12,8 @@ module.exports.receive = function (request, response) {
   console.log("Post received with payload" + request.body.payload);
  
   var repos = request.body.payload.repository;
+
+  console.log("repos is " + repos);
   repos.ownerName = repos.owner.name;
   delete repos.owner;
 
