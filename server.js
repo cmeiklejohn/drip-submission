@@ -28,6 +28,9 @@ app.configure('production', function(){
 
 // Models.
 //
+// TODO: Can someone fix this and put model files in models/ and use
+// exports?
+//
 var Schema = mongoose.Schema, 
     ObjectId = Schema.ObjectId;
 
