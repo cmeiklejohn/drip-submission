@@ -13,7 +13,7 @@ var Jobs = {
     var buildId       = build.buildId,
         repositoryId  = build.repositoryId;
 
-    console.log('Build called; repository_id: ' + repositoryId + ' build_id: ' + buildId);
+    console.log('Build called; repositoryId: ' + repositoryId + ' buildId: ' + buildId);
 
     Repository.findOne({ '_id': new ObjectId(repositoryId) }, function (err, repository) { 
       if(err) throw err;
