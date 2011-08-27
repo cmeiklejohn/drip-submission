@@ -9,7 +9,7 @@ module.exports.receive = function (request, response) {
     return;
   }
  
-  var repos = request.body.repository;
+  var repos = request.body.payload.repository;
   repos.ownerName = repos.owner.name;
   delete repos.owner;
 
