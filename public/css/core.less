@@ -13,11 +13,13 @@ html, body                                              { background: @canvas ur
 
 /* =SHARED
 ================================================== */
-.pane                                                   { background: @background; color: @foreground; position: absolute; top: 0; right: 0; bottom: 0; left: 200px; padding: 20px; 
+.pane                                                   { background: @background; color: @foreground; position: absolute; top: 0; right: 0; bottom: 0; left: 200px;
   .border-radius;
   .box-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
   text-shadow: 0px 1px 1px @white;
 }
+
+.pane_header                                            { background: blue; padding: 20px; color: @white; }
 
 input[type="text"].error, input[type="password"].error, textarea.error { border-color: #C87872;
   .box-shadow(0 0 3px rgba(171, 41, 32, 0.25));
@@ -73,3 +75,7 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
 }
 .repository_list ul li:hover                            { color: @grayLight; background: fadeout(@black, 90%); border-top: 1px solid fadeout(@black, 80%); }
 .repository_list ul li:first-child                      { border-top: 0; }
+
+.select_repository {}
+
+/* --- show repository view --- */
