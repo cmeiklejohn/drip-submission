@@ -33,7 +33,7 @@ var RepositoryView = Backbone.View.extend({
       }).render().el);
     }
     else {
-      el.append("This repository has no builds yet :(");
+      el.append("This repository has no builds yet ☹");
     }
 
     return this;
