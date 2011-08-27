@@ -27,10 +27,10 @@ app.get('/', Index.index);
 
 var Repositories = require('./controllers/repositories.js');
 app.get('/repositories', Repositories.list);
-app.get('/repositories/:owner_name', Repositories.show);
+app.get('/repositories/:ownerName', Repositories.show);
 
 var Builds = require('./controllers/builds.js');
-app.get('/repositories/:owner_name/:name', Builds.list);
+app.get('/repositories/:ownerName/:name', Builds.list);
 
 var Receiver = require('./controllers/receiver.js');
 app.post('/receive', Receiver.receive);

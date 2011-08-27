@@ -7,22 +7,22 @@ var mongoose = require('./config/mongoose');
 var ObjectId = require('mongoose').Types.ObjectId; 
 
 var Jobs = {
-  succeed: function(arg, callback) { callback(); },
-  fail: function(arg, callback) { callback(new Error('fail')); },
-  build: function(build, callback) { 
-    var build_id      = build.build_id;
-    var repository_id = build.repository_id;
+  succeed:  function (arg, callback) { callback(); },
+  fail:     function (arg, callback) { callback(new Error('fail')); },
+  build:    function (build, callback) { 
+    var buildId       = build.buildId,
+        repositoryId  = build.repositoryId;
 
-    console.log('Build called; repository_id: ' + repository_id + ' build_id: ' + build_id);
+    console.log('Build called; repositoryId: ' + repositoryId + ' buildId: ' + buildId);
 
-    Repository.findOne({ '_id': new ObjectId(repository_id) }, function (err, repository) { 
+    Repository.findOne({ '_id': new ObjectId(repositoryId) }, function (err, repository) { 
       if(err) throw err;
 
       console.log('Repository found: ' + repository);
 
-      var build = repository.builds.id(build_id);
+      var build = repository.builds.id(buildId);
       build.completed = true;
-      repository.save(function (err) { if(err) throw err; });
+      repository.save(function (err) { if (err) throw err; });
     });
 
     console.log('Build finished.');
