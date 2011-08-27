@@ -3,10 +3,10 @@ var nko       = require('nko')('+jzq0Dm9hbErZbrq'),
     mongoose  = require('mongoose'),
     resque    = require('coffee-resque');
 
-var app = express.createServer();
-
 // Configuration and environments.
 //
+var app = express.createServer();
+
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.use(express.static(__dirname + '/public'));
@@ -26,18 +26,44 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
+// Models.
+//
+var Schema = mongoose.Schema, 
+    ObjectId = Schema.ObjectId;
+
+var Repository = new Schema({ 
+  uri: { type: String, index: true, validate: function(v) { return v.length > 0 } },
+  builds: [Build]
+});
+
+Repository.pre('save', function (next) {
+  console.log('Saving repository!');
+  next();
+});
+
+var Build = new Schema({ 
+
+});
+
+Build.pre('save', function (next) {
+  console.log('Saving build!');
+  next();
+});
+
 // App routes.
 //
 app.get('/', function(request, response) { 
   response.render('index');
 });
+
 app.post('/receive', function(request, response) {
   if(!request.is('*/json') || !request.body.repository) {
-    console.log("received invalid post:",request.body);
+    console.log("received invalid post:", request.body);
+    response.end();
     return;
   }
   
-  console.log("received a post from:",request.body.repository.url);
+  console.log("received a post from:", request.body.repository.url);
   // TODO: fire off a new build!
     
 });
