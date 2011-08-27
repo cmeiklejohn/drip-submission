@@ -2,6 +2,8 @@ var Repository  = require('./models/repository.js').Repository,
     Build       = require('./models/build.js').Build,
     resque      = require('./config/resque');
 
+var mongoose = require('./config/mongoose');
+
 var ObjectId = require('mongoose').Types.ObjectId; 
 
 var Jobs = {
