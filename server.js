@@ -48,6 +48,7 @@ app.get('/', function(request, response) {
   response.render('index');
 });
 
+// TODO: Test me!
 app.post('/receive', function(request, response) {
   if(!request.is('*/json') || !request.body.repository) {
     console.log("Received invalid post:", request.body);
@@ -71,9 +72,10 @@ app.post('/receive', function(request, response) {
         console.log("Created!");
       });
     }
+
+    response.send('OK');
   });
 
-  response.end();
 });
 
 // Things to not do when we're testing.
