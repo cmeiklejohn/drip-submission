@@ -14,7 +14,8 @@
     "express": "~2.4.6",
     "jade": "~0.0.1",
     "mongoose": "~2.0.2",
-    "redis-url": "~0.0.1"
+    "redis-url": "~0.0.1",
+    "coffee-resque": "~0.0.1"
   },
   "devDependencies": {
     "expresso": "~0.8.1"
