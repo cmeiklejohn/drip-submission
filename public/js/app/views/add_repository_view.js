@@ -4,7 +4,11 @@ var AddRepositoryView = Backbone.View.extend({
   className: "add_repository",
 
   events: {
-    "click .button.add": "addRepository"
+    "click .btn.add": "save"
+  },
+
+  initialize: function () {
+    _.bindAll(this);
   },
 
   render: function () {
@@ -12,11 +16,26 @@ var AddRepositoryView = Backbone.View.extend({
     return this;
   },
 
-  addRepository: function () {
-    var repository = new Repository({
+  save: function () {
+    var input             = this.$(".repository_url_input"),
+        errorMessageNode  = this.$(".error_message");
+
+    this.reset();
+
+    this.model.bind("error", function (model, error) {
+      errorMessageNode.html(error);
+      errorMessageNode.fadeIn(200);
+      input.addClass("error");
     });
 
-    repository.save();
+    this.model.save({"githubURL": input.val()});
+  },
+
+  reset: function () {
+    var errorMessageNode = this.$(".error_message");
+    this.$(".repository_url_input").removeClass("error");
+    errorMessageNode.html("");
+    errorMessageNode.hide();
   }
 
 });
