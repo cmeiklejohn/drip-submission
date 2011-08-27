@@ -41,6 +41,7 @@ app.get('/', Index.index);
 
 var Repositories = require('./controllers/repositories.js');
 app.get('/repositories', Repositories.list);
+app.post('/repositories', Repositories.create);
 app.get('/repositories/:ownerName', Repositories.list);
 app.get('/repositories/:ownerName/:name', Repositories.show);
 
