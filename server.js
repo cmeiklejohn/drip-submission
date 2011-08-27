@@ -1,9 +1,7 @@
 var nko       = require('nko')('+jzq0Dm9hbErZbrq'), 
     express   = require('express');
 
-// Configuration and environments.
-//
-var app = express.createServer();
+var app = module.exports = express.createServer();
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -24,64 +22,16 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
-// Models.
-//
-var Repository = require("./models/repository.js").Repository;
-var Build = require("./models/build.js").Build;
+var Index = require('./controllers/index.js');
+app.get('/', Index.index);
 
-// App routes.
-//
-app.get('/', function(request, response) { 
-  response.render('index');
-});
+var Receiver = require('./controllers/receiver.js');
+app.post('/receive', Receiver.receive);
 
-// TODO: Test me!
-//
-app.post('/receive', function(request, response) {
-  if(!request.is('*/json') || !request.body.repository) {
-    console.log("Received invalid post:", request.body);
-    response.end();
-    return;
-  }
- 
-  var url = request.body.repository.url;
-
-  console.log("Received a post from:", url);
-  Repository.findOne({ url: url }, function(err, repository) { 
-    if(err) throw err;
-
-    if(!repository) {
-      var repository = new Repository();
-      repository.url = url;
-      repository.save(function (err) { if(err) throw err; });
-    }
-
-    var build = new Build();
-    repository.builds.push(build);
-    repository.save(function (err) { 
-      if(err) throw err; 
-      resque.enqueue('builder', 'build', 
-        { 
-          repository_id: repository.id,
-          build_id: build.id
-        }
-      );
-    });
-
-    response.send('OK');
-  });
-});
-
-// Resque (Redis to Go)
-//
 var resque = require('./config/resque');
 
-// MongoHQ connection
-//
 var mongoose = require('./config/mongoose');
 
-// Things to not do when we're testing.
-//
 if(!module.parent) {
   app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
     console.log('Ready');
@@ -96,5 +46,3 @@ if(!module.parent) {
     console.log('Listening on ' + app.address().port);
   });
 }
-
-module.exports = app;
