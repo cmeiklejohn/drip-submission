@@ -25,7 +25,7 @@ var Jobs = {
       // setsid: true is giving me "Operation not permitted"
       // do we actually need it though? unclear about clobbering previous sessions...
       var spawn_clone = function(){
-        cmds['clone'] = spawn('git', ['clone',repository.url], {cwd: tmp_dir, setsid: false});
+        cmds['clone'] = spawn('git', ['clone',repository.url, tmp_dir], {cwd: tmp_dir, setsid: false});
         cmdout.bind(cmds['clone'],'clone',spawn_npm_install);
       };
       
