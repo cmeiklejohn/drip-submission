@@ -56,6 +56,7 @@ app.get('/repositories/:ownerName/:name', Repositories.show);
 
 var Builds = require('./controllers/builds.js');
 app.get('/repositories/:ownerName/:name/builds', Builds.list);
+app.get('/repositories/:ownerName/:name/builds/:id', Builds.show);
 
 var Receiver = require('./controllers/receiver.js');
 app.post('/receive', Receiver.receive);
