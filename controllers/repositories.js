@@ -9,6 +9,8 @@ module.exports.create = function(request, response) {
     return;
   }
 
+  console.log(JSON.stringify(request.body));
+
   var repos           = request.body.repository;
   repos.ownerName     = repos.owner.name;
   delete repos.owner;

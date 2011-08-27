@@ -8,7 +8,7 @@ var Repository = Backbone.Model.extend({
 
   urlRoot: '/repositories',
   validate: function (attrs) {
-    if (!attrs.url) {
+    if (!attrs.repository.url) {
       return "Please enter a github repository url";
     }
   }

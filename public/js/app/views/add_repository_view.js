@@ -4,7 +4,7 @@ var AddRepositoryView = Backbone.View.extend({
   className: "add_repository",
 
   events: {
-    "click .btn.add": "save"
+    "submit #add_repo_form": "save"
   },
 
   initialize: function () {
@@ -16,9 +16,17 @@ var AddRepositoryView = Backbone.View.extend({
     return this;
   },
 
-  save: function () {
+  save: function (ev) {
+    ev.preventDefault();
+    
     var input             = this.$(".repository_url_input"),
-        errorMessageNode  = this.$(".error_message");
+        errorMessageNode  = this.$(".error_message"),
+        url               = input.val(),
+        urlChunks         = url.split('/'),
+        name              = urlChunks[urlChunks.length-1],
+        ownerName         = urlChunks[urlChunks.length-2];
+    
+    name = name.substring(0,name.indexOf(".git")); // uh, yuck!
 
     this.reset();
 
@@ -28,7 +36,13 @@ var AddRepositoryView = Backbone.View.extend({
       input.addClass("error");
     });
 
-    this.model.save({"githubURL": input.val()});
+    // https://github.com/visionmedia/jade.git
+    this.model.save({repository:{
+                       url: url,
+                       name: name,
+                       owner:{name: ownerName},
+                       
+                    }});
   },
 
   reset: function () {

@@ -24,9 +24,10 @@ html(lang="en")
 
     script(type="text/template", id="add_repository_tmpl")
       h1 Enter your github repository url to start running them pesky tests ☻
-      form
+      
+      form(method='post', action='/repositories', id='add_repo_form')
         input(type="text", class="xlarge repository_url_input")
-        a(class="btn primary large add") Add repository
+        input(type="submit",class="btn primary large add",value="Add repository")
         div(class="error_message")
 
     script(type="text/template", id="repository_list_template")
