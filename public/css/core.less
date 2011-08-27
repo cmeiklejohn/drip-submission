@@ -1,3 +1,10 @@
+/* =VARIABLES
+================================================== */
+@canvas: #333;
+@canvas_foreground: #fff;
+@foreground: #333;
+@background: #eee;
+
 /* =MIXINS
 ================================================== */
 .rounded_corners (@radius: 4px) {
@@ -10,12 +17,21 @@
 /* =BROWSER
 ================================================== */
 
-html, body                  { background: #333 url(/img/noisebg.png);  }
+html, body                                              { background: @canvas url(/img/noisebg.png);  }
 
 /* =SHARED
 ================================================== */
-.pane                       { background: #fff; .rounded_corners }
+.pane                                                   { background: @background; .rounded_corners; color: @foreground }
 
 /* =LAYOUT
 ================================================== */
-#main_logo                  { background: url(/img/driplogo.png) no-repeat; width: 200px; height: 100px; }
+#main_logo                                              { background: url(/img/driplogo.png) no-repeat; width: 200px; height: 100px; }
+#main_content                                           { }
+
+/* =STATES
+================================================== */
+
+.add_repository                                         { width: 600px; margin: 70px auto; position: relative; }
+.add_repository h1                                      { color: @canvas_foreground; }
+.add_repository .repository_url_input                   { width: 600px; height: 40px; font-size: 30px;}
+.add_repository .btn.add                                { position: absolute; bottom: 6px; right: -4px; } 
