@@ -3,7 +3,8 @@ var sys         = require('sys'),
     Repository  = require('./models/repository.js').Repository,
     Build       = require('./models/build.js').Build,
     resque      = require('./config/resque'),
-    mongoose    = require('./config/mongoose');
+    mongoose    = require('./config/mongoose'),
+    redis       = require('./config/redis');
 
 var ObjectId = require('mongoose').Types.ObjectId; 
 
@@ -74,9 +75,7 @@ var Jobs = {
         cmdOut.bind(name, buildFinish);
       };
 
-      // Finish the build
-      // TODO: Update output.
-      // TODO: Update successful.
+      // Finish the build.
       var buildFinish = function() { 
         build.finishedAt = Date.now();
         console.log("finishing build at ["+build.finishedAt+"]...");
@@ -104,12 +103,14 @@ var Jobs = {
       stdout: function(spawn,name) {
         spawn.stdout.on('data', function (data) {
           console.log('stdout '+name+' ['+workingDir+']: ' + data);
+          redis.lpush(build.id, data)
           outputBuffer.push(data);
         });
       },
       stderr: function(spawn,name) {
         spawn.stderr.on('data', function (data) {
           console.log('stderr '+name+' ['+workingDir+']: ' + data);
+          redis.lpush(build.id, data)
           outputBuffer.push(data);
         });
       },
