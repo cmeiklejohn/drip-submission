@@ -2,7 +2,7 @@
 html(lang="en")
   head
     meta(charset='utf-8')
-    title drip: the expresso testing service
+    title drip: expresso continuous integration
     //if lt IE 9
       script(src="//html5shim.googlecode.com/svn/trunk/html5.js")
     link(rel="stylesheet/less", type="text/css",href="/css/core.less")
@@ -23,10 +23,11 @@ html(lang="en")
     script(src="js/app/views/build_view.js")
 
     script(type="text/template", id="add_repository_tmpl")
-      h1 Enter your github repository url to start running them pesky tests ☻
+      h1 Feeling lucky? ☻
       form
-        input(type="text", class="xlarge repository_url_input")
-        a(class="btn primary large add") Add repository
+        input(type="text", class="xlarge repository_url_input", value="Paste GitHub repository URL here!")
+        a(class="btn primary large add") Run 'em, Danno!
+        h3 Drip is continuous integration for expresso.
         div(class="error_message")
 
     script(type="text/template", id="repository_list_template")
