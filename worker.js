@@ -52,6 +52,8 @@ var Jobs = {
       cmdout.bind(cmds['mkdir'],'mkdir',spawn_clone);
       
       // Finish the build
+      // TODO: Update output.
+      // TODO: Update successful.
       build.finishedAt = Date.now();
       build.completed = true;
       repository.save(function (err) { if (err) throw err; });
