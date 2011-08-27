@@ -103,14 +103,14 @@ var Jobs = {
       stdout: function(spawn,name) {
         spawn.stdout.on('data', function (data) {
           console.log('stdout '+name+' ['+workingDir+']: ' + data);
-          redis.lpush(build.id.toString(), data);
+          redis.lpush(build.id.toString(), data, function() { console.log("Issued write to redis");});
           outputBuffer.push(data);
         });
       },
       stderr: function(spawn,name) {
         spawn.stderr.on('data', function (data) {
           console.log('stderr '+name+' ['+workingDir+']: ' + data);
-          redis.lpush(build.id.toString(), data);
+          redis.lpush(build.id.toString(), data, function() { console.log("Issued write to redis");});
           outputBuffer.push(data);
         });
       },
