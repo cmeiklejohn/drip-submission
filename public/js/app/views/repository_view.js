@@ -5,19 +5,23 @@ var RepositoryView = Backbone.View.extend({
 
   events: {},
 
-  intialize: function () {
+  initialize: function () {
     _.bindAll(this);
+    this.model.bind("change", this.render);
   },
 
   render: function () {
-    console.log("render");
     var el = $(".pane"),
         tmpl = $(_.template($("#repository_show_template").html(), {name: this.model.get("name")}));
 
-    tmpl.find(".build_result").addClass("success");
+    if (this.model.isSuccessful) {
+      tmpl.find(".build_result").addClass("success");
+    }
+    else {
+      tmpl.find(".build_result").addClass("failure");
+    }
 
     if (el.length === 0) {
-      console.log("no panel!?");
       el = this.el = $(this.el);
     }
 

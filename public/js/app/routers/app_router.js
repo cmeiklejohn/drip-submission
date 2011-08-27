@@ -9,8 +9,10 @@ var AppRouter = Backbone.Router.extend({
   },
 
   beforeFilter: function () {
+    var appView = new AppView().render();
     var repositoryList = new RepositoryList();
     var repositoryListView = new RepositoryListView({
+      el: $(".repositories"),
       collection: repositoryList
     });
 
@@ -34,8 +36,11 @@ var AppRouter = Backbone.Router.extend({
 
   repositoriesShow: function (ownerName, name) {
     this.beforeFilter(ownerName);
-    var repository = Repository({ownerName: ownerName, name: name});
-    new RepositoryView({model: repository});
-    repository.fetch();
+
+    var repository      = new Repository({ownerName: ownerName, name: name}),
+        repositoryView  = new RepositoryView({model: repository});
+    repository.fetch({success: function () {
+      repository.trigger("change");
+    }});
   }
 });

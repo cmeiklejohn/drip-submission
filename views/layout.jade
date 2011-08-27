@@ -16,6 +16,7 @@ html(lang="en")
     script(src="js/app/models/build.js")
     script(src="js/app/models/repository.js")
     script(src="js/app/models/repository_list.js")
+    script(src="js/app/views/app_view.js")
     script(src="js/app/views/add_repository_view.js")
     script(src="js/app/views/repository_list_view.js")
     script(src="js/app/views/repository_view.js")
@@ -26,9 +27,9 @@ html(lang="en")
       form(method='post', action='/repositories', id='add_repo_form')
         input(type="text", class="xlarge repository_url_input", value="http://github.com/visionmedia/jade")
         input(type="submit",class="btn primary large add",value="Run 'em, Danno")
+        div(class="error_message")
 
         h3 Drip is continuous integration for expresso.
-        div(class="error_message")
 
     script(type="text/template", id="repository_list_template")
       aside(class="repository_list")
