@@ -1,7 +1,5 @@
 var nko       = require('nko')('+jzq0Dm9hbErZbrq'), 
-    express   = require('express'), 
-    mongoose  = require('mongoose'),
-    resque    = require('coffee-resque');
+    express   = require('express');
 
 // Configuration and environments.
 //
@@ -62,36 +60,29 @@ app.post('/receive', function(request, response) {
     repository.builds.push(build);
     repository.save(function (err) { 
       if(err) throw err; 
+      resque.enqueue('builder', 'build', 
+        { 
+          repository_id: repository.id,
+          build_id: build.id
+        }
+      );
     });
 
     response.send('OK');
   });
 });
 
+// Resque (Redis to Go)
+//
+var resque = require('./config/resque');
+
+// MongoHQ connection
+//
+var mongoose = require('./config/mongoose');
+
 // Things to not do when we're testing.
 //
 if(!module.parent) {
-
-  // Resque
-  //
-  resque.connect({ 
-    host: 'carp.redistogo.com',
-    port: 9198,
-    password: '675f1ab0bd9310846989e6ef326a6237'
-  });
-
-  // MongoHQ connection
-  //
-  mongoose.connect('mongodb://drip:drip2011@staff.mongohq.com:10075/drip', function(err) { 
-    if (err) throw err;
-    console.log('Connected to MongoHQ');
-  });
-
-  // TODO: Should be a callback.
-  console.log('Connected to Redis To Go');
-
-  // App port control.
-  //
   app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
     console.log('Ready');
 
