@@ -2,7 +2,7 @@
   "author": "Team Swipers <cmeiklejohn@swipely.com>",
   "name": "drip",
   "description": "Expresso testing service.",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "repository": {
     "url": ""
   },
