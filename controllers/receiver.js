@@ -29,10 +29,10 @@ module.exports.receive = function(request, response) {
     repository.builds.push(build);
     repository.save(function (err) { 
       if (err) throw err; 
-      resque.enqueue('builder', 'build', JSON.stringify({ 
-        repository_id:  repository.id,
-        build_id:       build.id
-      }));
+      resque.enqueue('builder', 'build', [{
+        build_id: build.id,
+        repository_id: repository.id
+      }]);
     });
 
     response.send('OK');
