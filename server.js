@@ -28,19 +28,8 @@ app.configure('production', function(){
 
 // Models.
 //
-// TODO: Can someone fix this and put model files in models/ and use
-// exports?
-//
-var Schema = mongoose.Schema, 
-    ObjectId = Schema.ObjectId;
-
-var Repository = mongoose.model('Repository', new Schema({ 
-  url: { type: String, index: true, validate: function(v) { return v.length > 0 } },
-  builds: [Build]
-}));
-
-var Build = mongoose.model('Build', new Schema({ 
-}));
+var Repository = require("./models/repository.js").Repository;
+var Build = require("./models/build.js").Build;
 
 // App routes.
 //
@@ -49,33 +38,34 @@ app.get('/', function(request, response) {
 });
 
 // TODO: Test me!
+//
 app.post('/receive', function(request, response) {
   if(!request.is('*/json') || !request.body.repository) {
     console.log("Received invalid post:", request.body);
     response.end();
     return;
   }
-  
-  console.log("Received a post from:", request.body.repository.url);
-  Repository.findOne({ url: request.body.repository.url }, function(err, doc) { 
+ 
+  var url = request.body.repository.url;
+
+  console.log("Received a post from:", url);
+  Repository.findOne({ url: url }, function(err, repository) { 
     if(err) throw err;
 
-    if(doc) {
-      console.log("Found repository: " + doc);
-    } else { 
-      console.log("No repository found, creating new.");
-
+    if(!repository) {
       var repository = new Repository();
-      repository.url = request.body.repository.url;
-      repository.save(function (err) {
-        if(err) throw err;
-        console.log("Created!");
-      });
+      repository.url = url;
+      repository.save(function (err) { if(err) throw err; });
     }
+
+    var build = new Build();
+    repository.builds.push(build);
+    repository.save(function (err) { 
+      if(err) throw err; 
+    });
 
     response.send('OK');
   });
-
 });
 
 // Things to not do when we're testing.
@@ -116,6 +106,4 @@ if(!module.parent) {
   });
 }
 
-// Export for testing.
-//
 module.exports = app;
