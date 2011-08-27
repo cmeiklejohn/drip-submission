@@ -11,16 +11,13 @@ module.exports.receive = function (request, response) {
 
   console.log("Post received with payload" + request.body.payload);
 
-  var payload = JSON.parse(request.body.payload);
-  var repos = payload.repository;
-
-  console.log("payload is " + payload);
-  console.log("repos is " + repos);
-
-  repos.ownerName = repos.owner.name;
+  var payload         = JSON.parse(request.body.payload);
+  var repos           = payload.repository;
+  repos.ownerName     = repos.owner.name;
   delete repos.owner;
 
   console.log("Received a post from:", repos.url);
+
   Repository.findOne({ url: repos.url }, function (err, repository) { 
     if (err) throw err;
 
