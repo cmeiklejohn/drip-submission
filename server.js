@@ -52,18 +52,20 @@ app.get('/', function(request, response) {
 
 // App port control.
 //
-app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
-  console.log('Ready');
+if(!module.parent) {
+  app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
+    console.log('Ready');
 
-  // if run as root, downgrade to the owner of this file
-  if (process.getuid() === 0)
-    require('fs').stat(__filename, function(err, stats) {
-      if (err) return console.log(err)
-      process.setuid(stats.uid);
-    });
+    // if run as root, downgrade to the owner of this file
+    if (process.getuid() === 0)
+      require('fs').stat(__filename, function(err, stats) {
+        if (err) return console.log(err)
+        process.setuid(stats.uid);
+      });
 
-  console.log('Listening on ' + app.address().port);
-});
+    console.log('Listening on ' + app.address().port);
+  });
+}
 
 // Export for testing.
 //
