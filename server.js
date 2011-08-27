@@ -35,7 +35,10 @@ resque.connect({
  password: '675f1ab0bd9310846989e6ef326a6237',
  callbacks: { 
    error: function(err) { 
-     console.log("thing");
+     console.log("failed to connect to RedisToGo");
+   },
+   success: function() {
+     console.log("Connected to RedisToGo")
    }
  }
 });
