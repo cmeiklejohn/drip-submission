@@ -34,6 +34,7 @@ resque.connect({
   password: '675f1ab0bd9310846989e6ef326a6237'
 });
 
+
 // MongoHQ connection
 //
 mongoose.connect('mongodb://drip:drip2011@staff.mongohq.com:10075/drip', function(err) { 
@@ -41,14 +42,22 @@ mongoose.connect('mongodb://drip:drip2011@staff.mongohq.com:10075/drip', functio
   console.log('Connected to MongoHQ');
 });
 
-// TODO: Should be a callback.
-console.log('Connected to Redis To Go');
-
 // App routes.
 //
 app.get('/', function(request, response) { 
   response.render('index');
 });
+app.post('/receive', function(request, response) {
+  if(!request.is('*/json') || !request.body.repository) {
+    console.log("received invalid post:",request.body);
+    return;
+  }
+  
+  console.log("received a post from:",request.body.repository.url);
+  // TODO: fire off a new build!
+    
+});
+
 
 // App port control.
 //
