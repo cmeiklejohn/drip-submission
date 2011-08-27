@@ -22,41 +22,53 @@ var Jobs = {
 
       console.log('Repository found: ' + repository);
 
-      // Get the build
+      // Get the build.
       var build = repository.builds.id(buildId);
 
-      // Start the build
-      build.startedAt = Date.now();
-      repository.save(function (err) { if (err) throw err; });
+      // Start the build.
+      var buildStart = function() { 
+        build.startedAt = Date.now();
+        repository.save(function (err) { if (err) throw err; spawnCloneDir(); });
+      };
 
+      // Make clone repo dir.
+      var spawnCloneDir = function() { 
+        tmp_dir = ['/tmp/', 'dripio', repository.owner_name, repository.name, Date.now()].join('_');
+        cmds['mkdir'] = spawn('mkdir',['-vp',tmp_dir]);
+        cmdout.bind(cmds['mkdir'],'mkdir',spawnClone);
+      };
+
+      // Clone.
       // setsid: true is giving me "Operation not permitted"
       // do we actually need it though? unclear about clobbering previous sessions...
-      var spawn_clone = function(){
+      var spawnClone = function(){
         cmds['clone'] = spawn('git', ['clone',repository.url, tmp_dir], {cwd: tmp_dir, setsid: false});
-        cmdout.bind(cmds['clone'],'clone',spawn_npm_install);
+        cmdout.bind(cmds['clone'],'clone',spawnNpmInstall);
       };
       
       // Setup the environment
-      var spawn_npm_install = function(){
+      var spawnNpmInstall = function(){
         cmds['npm_install'] = spawn('npm',['install'], {cwd: tmp_dir});
-        cmdout.bind(cmds['npm_install'],'npm_install',spawn_make_test);
-      };
-      var spawn_make_test = function(){
-        cmds['make_test'] = spawn('make',['test'], {cwd: tmp_dir});
-        cmdout.bind(cmds['make_test'],'make_test');
+        cmdout.bind(cmds['npm_install'],'npm_install',spawnMakeTest);
       };
 
-      // Clone the repo
-      tmp_dir = ['/tmp/', 'dripio', repository.owner_name, repository.name, Date.now()].join('_');
-      cmds['mkdir'] = spawn('mkdir',['-vp',tmp_dir]);
-      cmdout.bind(cmds['mkdir'],'mkdir',spawn_clone);
-      
+      // Run tests.
+      var spawnMakeTest = function(){
+        cmds['make_test'] = spawn('make',['test'], {cwd: tmp_dir});
+        cmdout.bind(cmds['make_test'],'make_test', buildFinish);
+      };
+
       // Finish the build
       // TODO: Update output.
       // TODO: Update successful.
-      build.finishedAt = Date.now();
-      build.completed = true;
-      repository.save(function (err) { if (err) throw err; });
+      var buildFinish = function() { 
+        build.finishedAt = Date.now();
+        build.completed = true;
+        repository.save(function (err) { if (err) throw err; });
+      };
+
+      // Begin.
+      buildStart();
     });
     
     console.log('Build finished.');
