@@ -39,6 +39,11 @@ app.configure('production', function(){
 var Index = require('./controllers/index.js');
 app.get('/', Index.index);
 
+// Blitz.io
+app.get('/mu-3775f757-f1a90d82-e1907dc9-8bc0a3c0', function(request, response) { 
+  response.send('42');
+});
+
 var Repositories = require('./controllers/repositories.js');
 app.get('/repositories', Repositories.list);
 app.post('/repositories', Repositories.create);
