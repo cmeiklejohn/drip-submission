@@ -16,7 +16,8 @@
     "mongoose": "~2.0.2",
     "redis-url": "~0.0.1",
     "coffee-resque": "~0.1.4", 
-    "resque": "~0.0.3"
+    "resque": "~0.0.3",
+    "socket.io": "~0.7.10"
   },
   "devDependencies": {
     "expresso": "~0.8.1"
