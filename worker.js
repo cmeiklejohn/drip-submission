@@ -35,6 +35,7 @@ var Jobs = {
       // Start the build.
       var buildStart = function() { 
         build.startedAt = Date.now();
+        build.running   = true
         repository.save(function (err) { if (err) throw err; spawnCloneDir(); });
       };
 
@@ -79,7 +80,8 @@ var Jobs = {
       var buildFinish = function() { 
         build.finishedAt = Date.now();
         console.log("finishing build at ["+build.finishedAt+"]...");
-        build.completed = true;
+        build.completed  = true;
+        build.running    = false;
         build.successful = stepsSuccessful;
         repository.save(function (err) { if (err) throw err; });
       };
