@@ -22,8 +22,11 @@ module.exports.show = function (request, response) {
     if (err) throw err;
 
     var build = repository.builds.id(id)
-    build.output = redis.lrange("builds:" + build.id, 0, -1, function() { 
-      console.log("Retrieved output from redis for build log");
+    redis.lrange("builds:" + build.id, 0, -1, function(err, obj) {
+      if (err) throw err;
+
+      console.log("Retrieved output from redis for build log: " + obj);
+      build.output = obj;
     });
     response.send(build);
   });
