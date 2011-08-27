@@ -11,19 +11,26 @@ var Jobs = {
   succeed:  function (arg, callback) { callback(); },
   fail:     function (arg, callback) { callback(new Error('fail')); },
   build:    function (build, callback) { 
-    var buildId       = build.buildId,
-        repositoryId  = build.repositoryId,
-        tmp_dir, cmds = {};
+    var buildId         = build.buildId,
+        repositoryId    = build.repositoryId,
+        build,
+        buildRepository,
+        cmds            = {},
+        outputBuffer    = [],
+        stepsSuccessful = false,
+        workingDir;
 
     console.log('Build called; repositoryId: ' + repositoryId + ' buildId: ' + buildId);
 
     Repository.findOne({ '_id': new ObjectId(repositoryId) }, function (err, repository) { 
       if(err) throw err;
-
+      
       console.log('Repository found: ' + repository);
+      
+      buildRepository = repository;
 
       // Get the build.
-      var build = repository.builds.id(buildId);
+      build = repository.builds.id(buildId);
 
       // Start the build.
       var buildStart = function() { 
@@ -32,30 +39,34 @@ var Jobs = {
       };
 
       // Make clone repo dir.
-      var spawnCloneDir = function() { 
-        tmp_dir = ['/tmp/', 'dripio', repository.owner_name, repository.name, Date.now()].join('_');
-        cmds['mkdir'] = spawn('mkdir',['-vp',tmp_dir]);
-        cmdout.bind(cmds['mkdir'],'mkdir',spawnClone);
+      var spawnCloneDir = function() {
+        var name = 'mkdir';
+        workingDir = ['/tmp/', 'dripio', repository.owner_name, repository.name, Date.now()].join('_');
+        cmds[name] = spawn('mkdir',['-vp',workingDir]);
+        cmdOut.bind(name, spawnClone);
       };
 
       // Clone.
       // setsid: true is giving me "Operation not permitted"
       // do we actually need it though? unclear about clobbering previous sessions...
       var spawnClone = function(){
-        cmds['clone'] = spawn('git', ['clone',repository.url, tmp_dir], {cwd: tmp_dir, setsid: false});
-        cmdout.bind(cmds['clone'],'clone',spawnNpmInstall);
+        var name = 'clone';
+        cmds[name] = spawn('git', ['clone',repository.url, workingDir], {cwd: workingDir, setsid: false});
+        cmdOut.bind(name, spawnNpmInstall);
       };
       
       // Setup the environment
       var spawnNpmInstall = function(){
-        cmds['npm_install'] = spawn('npm',['install'], {cwd: tmp_dir});
-        cmdout.bind(cmds['npm_install'],'npm_install',spawnMakeTest);
+        var name = 'clone';
+        cmds[name] = spawn('npm',['install'], {cwd: workingDir});
+        cmdOut.bind(name, spawnMakeTest);
       };
 
       // Run tests.
       var spawnMakeTest = function(){
-        cmds['make_test'] = spawn('make',['test'], {cwd: tmp_dir});
-        cmdout.bind(cmds['make_test'],'make_test', buildFinish);
+        var name = 'make_test';
+        cmds[name] = spawn('make',['test'], {cwd: workingDir});
+        cmdOut.bind(name, buildFinish);
       };
 
       // Finish the build
@@ -64,6 +75,7 @@ var Jobs = {
       var buildFinish = function() { 
         build.finishedAt = Date.now();
         build.completed = true;
+        build.successful = stepsSuccessful;
         repository.save(function (err) { if (err) throw err; });
       };
 
@@ -75,26 +87,40 @@ var Jobs = {
 
     callback(build);
     
-    var cmdout = {
-      bind: function(spawn,name,next) {
+    var cmdOut = {
+      bind: function(name,next) {
+        var spawn = cmds[name];
         this.stdout(spawn,name);
         this.stderr(spawn,name);
         this.exit(spawn,name,next);
       },
       stdout: function(spawn,name) {
-        spawn.stdout.on('data', function (data) { console.log('stdout '+name+' ['+tmp_dir+']: ' + data); });
+        spawn.stdout.on('data', function (data) {
+          console.log('stdout '+name+' ['+workingDir+']: ' + data);
+          outputBuffer.push(data);
+        });
       },
       stderr: function(spawn,name) {
-        spawn.stderr.on('data', function (data) { console.log('stderr '+name+' ['+tmp_dir+']: ' + data); });
+        spawn.stderr.on('data', function (data) { console.log('stderr '+name+' ['+workingDir+']: ' + data); });
+        outputBuffer.push(data);
       },
       exit: function(spawn,name,next) {
         spawn.on('exit', function (code) {
-          console.log('exit '+name+' ['+tmp_dir+'] code: ' + code);
-          if(code === 0 && typeof(next) === 'function') {
-            console.log('clean exit; calling next()')
-            next();
+          console.log('exit '+name+' ['+workingDir+'] code: ' + code);
+          
+          build.output = outputBuffer.join('');
+          buildRepository.save(function (err) { if (err) throw err; });
+          
+          if(code === 0) {
+            console.log('clean exit; calling next() is present')
+            stepsSuccessful = true;
+            
+            if (typeof(next) === 'function') {
+              next();
+            }
           } else {
             console.log('unclean exit; not progressing to next, typeof: '+typeof(next))
+            stepsSuccessful = false;
           }
         });
       }
