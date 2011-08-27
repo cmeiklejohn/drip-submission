@@ -26,8 +26,6 @@ var AddRepositoryView = Backbone.View.extend({
         name              = urlChunks[urlChunks.length-1],
         ownerName         = urlChunks[urlChunks.length-2];
     
-    name = name.substring(0,name.indexOf(".git")); // uh, yuck!
-
     this.reset();
 
     this.model.bind("error", function (model, error) {
