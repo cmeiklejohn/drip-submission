@@ -10,10 +10,13 @@ module.exports.receive = function (request, response) {
   }
 
   console.log("Post received with payload" + request.body.payload);
- 
-  var repos = request.body.payload.repository;
 
+  var payload = JSON.parse(request.body.payload);
+  var repos = payload.repository;
+
+  console.log("payload is " + payload);
   console.log("repos is " + repos);
+
   repos.ownerName = repos.owner.name;
   delete repos.owner;
 
