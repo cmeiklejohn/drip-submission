@@ -10,7 +10,24 @@ html(lang="en")
     script(src="js/vendor/less-1.1.3.min.js")
     script(src="js/vendor/underscore-min.js")
     script(src="js/vendor/json2.js")
+    script(src="js/vendor/jquery-1.6.2.min.js")
     script(src="js/vendor/backbone-min.js")
+    
+    script(src="js/app/routers/app_router.js")
+    script(src="js/app/models/build.js")
+    script(src="js/app/models/repository.js")
+    script(src="js/app/views/add_repository_view.js")
+
+    script(type="text/template", id="add_repository_tmpl")
+      h1 Enter your github repository url to start running them pesky tests ☻
+      form
+        input(type="text", class="xlarge repository_url_input")
+        a(class="btn primary large add") Add repository
+        div(class="error_message")
 
   body
     != body
+
+  script
+    var appRouter = new AppRouter();
+    Backbone.history.start();

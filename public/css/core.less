@@ -1,3 +1,10 @@
+/* =VARIABLES
+================================================== */
+@canvas: #333;
+@canvas_foreground: #fff;
+@foreground: #333;
+@background: #eee;
+
 /* =MIXINS
 ================================================== */
 .rounded_corners (@radius: 4px) {
@@ -6,16 +13,40 @@
           border-radius: @radius;
 }
 
-
 /* =BROWSER
 ================================================== */
 
-html, body                  { background: #333 url(/img/noisebg.png);  }
+html, body                                              { background: @canvas url(/img/noisebg.png);  }
 
 /* =SHARED
 ================================================== */
-.pane                       { background: #fff; .rounded_corners }
+.pane                                                   { background: @background; .rounded_corners; color: @foreground }
+
+input[type="text"].error, input[type="password"].error, textarea.error { border-color: #C87872;
+  -webkit-box-shadow: 0 0 3px rgba(171, 41, 32, 0.25);
+     -moz-box-shadow: 0 0 3px rgba(171, 41, 32, 0.25);
+          box-shadow: 0 0 3px rgba(171, 41, 32, 0.25);
+}
+
 
 /* =LAYOUT
 ================================================== */
-#main_logo                  { background: url(/img/driplogo.png) no-repeat; width: 200px; height: 100px; }
+#main_logo                                              { background: url(/img/driplogo.png) no-repeat; width: 200px; height: 100px; }
+#main_content                                           { }
+
+/* =STATES
+================================================== */
+
+/* --- add repository --- */
+.add_repository                                         { width: 750px; margin: 70px auto; position: relative; }
+.add_repository h1                                      { color: @canvas_foreground; }
+.add_repository form                                    { position: absolute; }
+.add_repository .repository_url_input                   { width: 750px; height: 40px; font-size: 30px;}
+.add_repository .btn.add                                { position: absolute; top: 6px; right: 6px; } 
+.add_repository .error_message                          { display: none; margin-top: -2px; font-size: 16px; color: @canvas_foreground; padding: 10px; text-align: center; 
+  background: rgba(255, 0, 0, 0.15);
+  border: 1px solid rgba(255, 0, 0, 0.1);
+  -webkit-border-radius: 0px 0px 4px 4px;
+     -moz-border-radius: 0px 0px 4px 4px;
+          border-radius: 0px 0px 4px 4px;
+}
