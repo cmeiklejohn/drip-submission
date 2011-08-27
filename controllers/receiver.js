@@ -11,6 +11,8 @@ module.exports.receive = function(request, response) {
   }
  
   var url = request.body.repository.url;
+  var name = request.body.repository.name;
+  var owner_name = request.body.repository.owner.name;
 
   console.log("Received a post from:", url);
   Repository.findOne({ url: url }, function(err, repository) { 
@@ -19,6 +21,8 @@ module.exports.receive = function(request, response) {
     if(!repository) {
       var repository = new Repository();
       repository.url = url;
+      repository.name = name;
+      repository.owner_name = owner_name;
       repository.save(function (err) { if(err) throw err; });
     }
 
