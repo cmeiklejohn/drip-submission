@@ -1,9 +1,29 @@
-var http = require('http'),
-    nko  = require('nko')('+jzq0Dm9hbErZbrq');
+var nko     = require('nko')('+jzq0Dm9hbErZbrq'), 
+    express = require('express');
 
-var app = http.createServer(function (req, res) { 
-  res.writeHead(200, { 'Content-Type': 'text/html' }); 
-  res.end('Hello, World'); 
+var app = express.createServer();
+
+app.configure(function(){
+  app.set('views', __dirname + '/views');
+  app.use(express.static(__dirname + '/public'));
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
+  app.use(express.cookieParser());
+  app.use(express.logger());
+  app.use(app.router);
+  app.set('view engine', 'jade');
+});
+
+app.configure('development', function(){
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+});
+
+app.configure('production', function(){
+  app.use(express.errorHandler()); 
+});
+
+app.get('/', function(request, response) { 
+  response.render('index');
 });
 
 app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
@@ -16,5 +36,7 @@ app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
       process.setuid(stats.uid);
     });
 });
+
+module.exports = app;
 
 console.log('Listening on ' + app.address().port);
