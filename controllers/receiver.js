@@ -9,9 +9,7 @@ module.exports.receive = function (request, response) {
     return;
   }
 
-  console.log("Post received!");
-
-  console.log(request.params);
+  console.log("Post received with payload" + request.params.payload);
  
   var repos = request.body.payload.repository;
   repos.ownerName = repos.owner.name;
