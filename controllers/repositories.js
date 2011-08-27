@@ -1,17 +1,27 @@
 var Repository = require('.././models/repository.js').Repository;
 
 module.exports.list = function (request, response) { 
-  Repository.find(function (err, repositories) { 
-    if(err) throw err;
-    response.send(repositories);
-  });
+  var ownerName = request.params.ownerName;
+
+  if(ownerName) { 
+    Repository.find({ ownerName: ownerName }, function (err, repositories) { 
+      if(err) throw err;
+      response.send(repositories);
+    });
+  } else { 
+    Repository.find(function (err, repositories) { 
+      if(err) throw err;
+      response.send(repositories);
+    });
+  }
 };
 
 module.exports.show = function (request, response) { 
-  var owner_name = request.params.ownerName;
+  var name = request.params.name;
+  var ownerName = request.params.ownerName;
 
-  Repository.find({ ownerName: ownerName }, function (err, repositories) { 
+  Repository.findOne({ ownerName: ownerName, name: name  }, function (err, repository) { 
     if (err) throw err;
-    response.send(repositories);
+    response.send(repository);
   });
 };
