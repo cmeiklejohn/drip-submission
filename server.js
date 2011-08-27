@@ -26,33 +26,36 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
-// Resque
-//
-resque.connect({ 
-  host: 'carp.redistogo.com',
-  port: 9198,
-  password: '675f1ab0bd9310846989e6ef326a6237'
-});
-
-// MongoHQ connection
-//
-mongoose.connect('mongodb://drip:drip2011@staff.mongohq.com:10075/drip', function(err) { 
-  if (err) throw err;
-  console.log('Connected to MongoHQ');
-});
-
-// TODO: Should be a callback.
-console.log('Connected to Redis To Go');
-
 // App routes.
 //
 app.get('/', function(request, response) { 
   response.render('index');
 });
 
-// App port control.
+// Things to not do when we're testing.
 //
 if(!module.parent) {
+
+  // Resque
+  //
+  resque.connect({ 
+    host: 'carp.redistogo.com',
+    port: 9198,
+    password: '675f1ab0bd9310846989e6ef326a6237'
+  });
+
+  // MongoHQ connection
+  //
+  mongoose.connect('mongodb://drip:drip2011@staff.mongohq.com:10075/drip', function(err) { 
+    if (err) throw err;
+    console.log('Connected to MongoHQ');
+  });
+
+  // TODO: Should be a callback.
+  console.log('Connected to Redis To Go');
+
+  // App port control.
+  //
   app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
     console.log('Ready');
 
