@@ -23,8 +23,6 @@ html(lang="en")
     script(src="js/app/views/build_view.js")
 
     script(type="text/template", id="add_repository_tmpl")
-      h1 Enter your github repository url to start running them pesky tests ☻
-      
       form(method='post', action='/repositories', id='add_repo_form')
         input(type="text", class="xlarge repository_url_input", value="http://github.com/visionmedia/jade")
         input(type="submit",class="btn primary large add",value="Add repository")
