@@ -10,6 +10,8 @@ module.exports.receive = function (request, response) {
   }
 
   console.log("Post received!");
+
+  console.log(request.params);
  
   var repos = request.body.payload.repository;
   repos.ownerName = repos.owner.name;
