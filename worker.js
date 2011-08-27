@@ -22,22 +22,28 @@ var Jobs = {
 
       console.log('Repository found: ' + repository);
 
+      // setsid: true is giving me "Operation not permitted"
+      // do we actually need it though? unclear about clobbering previous sessions...
+      var spawn_clone = function(){
+        cmds['clone'] = spawn('git', ['clone',repository.url], {cwd: tmp_dir, setsid: false});
+        cmdout.bind(cmds['clone'],'clone',spawn_npm_install);
+      };
+      
+      // Setup the environment
+      var spawn_npm_install = function(){
+        cmds['npm_install'] = spawn('npm',['install'], {cwd: tmp_dir});
+        cmdout.bind(cmds['npm_install'],'npm_install',spawn_make_test);
+      };
+      var spawn_make_test = function(){
+        cmds['make_test'] = spawn('make',['test'], {cwd: tmp_dir});
+        cmdout.bind(cmds['make_test'],'make_test');
+      };
+
       // Clone the repo
       tmp_dir = ['/tmp/', 'dripio', repository.owner_name, repository.name, Date.now()].join('_');
       cmds['mkdir'] = spawn('mkdir',['-vp',tmp_dir]);
-      cmdout.bind(cmds['mkdir'],'mkdir');
+      cmdout.bind(cmds['mkdir'],'mkdir',spawn_clone);
       
-      // setsid: true is giving me "Operation not permitted"
-      // do we actually need it though? unclear about clobbering previous sessions...
-      cmds['clone'] = spawn('git', ['clone',repository.url], {cwd: tmp_dir, setsid: false});
-      cmdout.bind(cmds['clone'],'clone');
-      
-      // Setup the environment
-      cmds['npm_install'] = spawn('npm',['install'], {cwd: tmp_dir});
-      cmdout.bind(cmds['npm_install'],'npm_install');
-      cmds['make_test'] = spawn('make',['test'], {cwd: tmp_dir});
-      cmdout.bind(cmds['make_test'],'make_test');
-
       // Start the build
       var build = repository.builds.id(buildId);
       build.completed = true;
@@ -49,10 +55,10 @@ var Jobs = {
     callback(build);
     
     var cmdout = {
-      bind: function(spawn,name) {
+      bind: function(spawn,name,next) {
         this.stdout(spawn,name);
         this.stderr(spawn,name);
-        this.exit(spawn,name);
+        this.exit(spawn,name,next);
       },
       stdout: function(spawn,name) {
         spawn.stdout.on('data', function (data) { console.log('stdout '+name+' ['+tmp_dir+']: ' + data); });
@@ -60,8 +66,16 @@ var Jobs = {
       stderr: function(spawn,name) {
         spawn.stderr.on('data', function (data) { console.log('stderr '+name+' ['+tmp_dir+']: ' + data); });
       },
-      exit: function(spawn,name) {
-        spawn.on('exit', function (code) { console.log('exit '+name+' ['+tmp_dir+'] code: ' + code); });
+      exit: function(spawn,name,next) {
+        spawn.on('exit', function (code) {
+          console.log('exit '+name+' ['+tmp_dir+'] code: ' + code);
+          if(code === 0 && typeof(next) === 'function') {
+            console.log('clean exit; calling next()')
+            next();
+          } else {
+            console.log('unclean exit; not progressing to next, typeof: '+typeof(next))
+          }
+        });
       }
     };
   }
