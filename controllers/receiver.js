@@ -3,7 +3,7 @@ var Repository  = require('../models/repository.js').Repository,
     resque      = require('../config/resque');
 
 module.exports.receive = function (request, response) {
-  if (!request.is('*/json') || !request.body.repository) {
+  if (!request.is('*/json') || !request.body.payload) {
     console.log("Received invalid post:", request.body);
     response.end();
     return;
