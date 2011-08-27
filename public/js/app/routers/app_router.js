@@ -2,10 +2,10 @@ var AppRouter = Backbone.Router.extend({
 
   routes: {
     "": "root",
-    "/repositories/new": "repositories.add",
-    "/repositories":     "repositoriesList",
+    "/repositories/new":  "repositoriesAdd",
+    "/repositories":      "repositoriesList",
     "/:ownerName/":       "repositoriesList",
-    "/:ownerName/:name":  "repositories.show"
+    "/:ownerName/:name":  "repositoriesShow"
   },
 
   beforeFilter: function () {
@@ -29,11 +29,13 @@ var AppRouter = Backbone.Router.extend({
   },
 
   repositoriesList: function (ownerName) {
-    console.log("here");
     this.beforeFilter(ownerName);
   },
 
   repositoriesShow: function (ownerName, name) {
     this.beforeFilter(ownerName);
+    var repository = Repository({ownerName: ownerName, name: name});
+    new RepositoryView({model: repository});
+    repository.fetch();
   }
 });
