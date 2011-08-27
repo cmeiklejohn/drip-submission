@@ -4,8 +4,10 @@ var mongoose = require('mongoose'),
 
 module.exports.BuildSchema = new Schema({ 
   completed: { type: Boolean, index: true, default: false },
-  successful: { type: Boolean },
-  receivedAt: { type: Date, default: Date.now }
+  successful: { type: Boolean, default: false },
+  receivedAt: { type: Date, default: Date.now },
+  finishedAt: { type: Date },
+  output: { type: String }
 });
 
 module.exports.Build = mongoose.model('Build', module.exports.BuildSchema);
