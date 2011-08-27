@@ -101,8 +101,10 @@ var Jobs = {
         });
       },
       stderr: function(spawn,name) {
-        spawn.stderr.on('data', function (data) { console.log('stderr '+name+' ['+workingDir+']: ' + data); });
-        outputBuffer.push(data);
+        spawn.stderr.on('data', function (data) {
+          console.log('stderr '+name+' ['+workingDir+']: ' + data);
+          outputBuffer.push(data);
+        });
       },
       exit: function(spawn,name,next) {
         spawn.on('exit', function (code) {
