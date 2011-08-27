@@ -8,8 +8,9 @@ var RepositoryListView = Backbone.View.extend({
 
   render: function () {
     var innerNode = $(".repositories").find(".repository_list ul");
-
-    _.each(this.collection.toArray(), function (repository) {
+        groups = this.collection.toArray();
+  
+    _.each(groups, function (repository) {
       innerNode.append(new RepositoryListItemView({
         model: repository
       }).render().el);
@@ -40,7 +41,7 @@ var RepositoryListItemView = Backbone.View.extend({
   },
 
   render: function () {
-    $(this.el).html(this.model.get("name"));
+    $(this.el).html(this.model.get("ownerName") + "/" + this.model.get("name"));
     return this;
   },
 
