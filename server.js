@@ -27,20 +27,11 @@ app.configure('production', function(){
 });
 
 // Resque
-// TODO: Can someone please fix this?
-
+//
 resque.connect({ 
  host: 'carp.redistogo.com', 
  port: 9198, 
- password: '675f1ab0bd9310846989e6ef326a6237',
- callbacks: { 
-   error: function(err) { 
-     console.log("failed to connect to RedisToGo");
-   },
-   success: function() {
-     console.log("Connected to RedisToGo")
-   }
- }
+ password: '675f1ab0bd9310846989e6ef326a6237'
 });
 
 // MongoHQ connection
@@ -49,6 +40,9 @@ mongoose.connect('mongodb://drip:drip2011@staff.mongohq.com:10075/drip', functio
   if (err) throw err;
   console.log('Connected to MongoHQ');
 });
+
+// TODO: Should be a callback.
+console.log('Connected to Redis To Go');
 
 // App routes.
 //
