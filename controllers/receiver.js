@@ -4,7 +4,7 @@ var Repository  = require('../models/repository.js').Repository,
 
 module.exports.receive = function (request, response) {
   if (!request.is('*/json') || !request.body.payload) {
-    console.log("Received invalid post:", request.body);
+    console.log("Received invalid post:", request.headers['content-type'], request.body);
     response.end();
     return;
   }
