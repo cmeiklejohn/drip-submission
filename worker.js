@@ -24,7 +24,7 @@ var Jobs = {
 
       // Clone the repo
       tmp_dir = ['/tmp/', 'dripio', repository.owner_name, repository.name, Date.now()].join('_');
-      cmds['mkdir'] = spawn('mkdir',['-p',tmp_dir]);
+      cmds['mkdir'] = spawn('mkdir',['-vp',tmp_dir]);
       cmdout.bind(cmds['mkdir'],'mkdir');
       
       // setsid: true is giving me "Operation not permitted"
@@ -54,14 +54,14 @@ var Jobs = {
         this.stderr(spawn,name);
         this.exit(spawn,name);
       },
-      stdout: function(spawn) {
+      stdout: function(spawn,name) {
         spawn.stdout.on('data', function (data) { console.log('stdout '+name+' ['+tmp_dir+']: ' + data); });
       },
-      stderr: function(spawn) {
-        cmds['clone'].stderr.on('data', function (data) { console.log('stderr '+name+' ['+tmp_dir+']: ' + data); });
+      stderr: function(spawn,name) {
+        spawn.stderr.on('data', function (data) { console.log('stderr '+name+' ['+tmp_dir+']: ' + data); });
       },
-      exit: function(spawn) {
-        cmds['clone'].on('exit', function (code) { console.log('exit '+name+' ['+tmp_dir+'] code: ' + code); });
+      exit: function(spawn,name) {
+        spawn.on('exit', function (code) { console.log('exit '+name+' ['+tmp_dir+'] code: ' + code); });
       }
     };
   }
