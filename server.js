@@ -1,5 +1,6 @@
-var nko     = require('nko')('+jzq0Dm9hbErZbrq'), 
-    express = require('express');
+var nko       = require('nko')('+jzq0Dm9hbErZbrq'), 
+    express   = require('express'), 
+    mongoose  = require('mongoose');
 
 var app = express.createServer();
 
@@ -22,6 +23,11 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
+mongoose.connect('mongodb://drip:drip2011@staff.mongohq.com:10075/drip', function(err) { 
+  if (err) throw err;
+  console.log('Connected to MongoHQ');
+});
+
 app.get('/', function(request, response) { 
   response.render('index');
 });
@@ -35,8 +41,8 @@ app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
       if (err) return console.log(err)
       process.setuid(stats.uid);
     });
+
+  console.log('Listening on ' + app.address().port);
 });
 
 module.exports = app;
-
-console.log('Listening on ' + app.address().port);

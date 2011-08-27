@@ -12,7 +12,11 @@
   "dependencies": {
     "nko": "~0.1.0",
     "express": "~2.4.6",
-    "expresso": "~0.8.1"
+    "jade": "~0.0.1",
+    "mongoose": "~2.0.2",
+    "redis-url": "~0.0.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "expresso": "~0.8.1"
+  }
 }

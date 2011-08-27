@@ -1,0 +1,21 @@
+/* =MIXINS
+================================================== */
+.rounded_corners (@radius: 4px) {
+  -webkit-border-radius: @radius;
+     -moz-border-radius: @radius;
+          border-radius: @radius;
+}
+
+
+/* =BROWSER
+================================================== */
+
+html, body                  { background: #333 url(/img/noisebg.png);  }
+
+/* =SHARED
+================================================== */
+.pane                       { background: #fff; .rounded_corners }
+
+/* =LAYOUT
+================================================== */
+#main_logo                  { background: url(/img/driplogo.png) no-repeat; width: 200px; height: 100px; }
