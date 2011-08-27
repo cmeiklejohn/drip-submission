@@ -1,5 +1,7 @@
-var Repository = require('.././models/repository.js').Repository;
-var Build = require('.././models/build.js').Build;
+var Repository = require('../models/repository.js').Repository;
+var Build = require('../models/build.js').Build;
+
+var resque = require('../config/resque');
 
 module.exports.receive = function(request, response) {
   if(!request.is('*/json') || !request.body.repository) {

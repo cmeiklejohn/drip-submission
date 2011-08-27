@@ -25,10 +25,11 @@ app.configure('production', function(){
 var Index = require('./controllers/index.js');
 app.get('/', Index.index);
 
+var Repositories = require('./controllers/repositories.js');
+app.get('/repositories', Repositories.list);
+
 var Receiver = require('./controllers/receiver.js');
 app.post('/receive', Receiver.receive);
-
-var resque = require('./config/resque');
 
 var mongoose = require('./config/mongoose');
 
