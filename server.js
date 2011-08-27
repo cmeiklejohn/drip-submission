@@ -1,9 +1,12 @@
 var nko       = require('nko')('+jzq0Dm9hbErZbrq'), 
     express   = require('express'), 
-    mongoose  = require('mongoose');
+    mongoose  = require('mongoose'),
+    resque    = require('coffee-resque');
 
 var app = express.createServer();
 
+// Configuration and environments.
+//
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.use(express.static(__dirname + '/public'));
@@ -23,15 +26,22 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
+
+// MongoHQ connection
+//
 mongoose.connect('mongodb://drip:drip2011@staff.mongohq.com:10075/drip', function(err) { 
   if (err) throw err;
   console.log('Connected to MongoHQ');
 });
 
+// App routes.
+//
 app.get('/', function(request, response) { 
   response.render('index');
 });
 
+// App port control.
+//
 app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
   console.log('Ready');
 
@@ -45,4 +55,6 @@ app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
   console.log('Listening on ' + app.address().port);
 });
 
+// Export for testing.
+//
 module.exports = app;
