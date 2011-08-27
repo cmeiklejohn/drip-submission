@@ -2,6 +2,8 @@ var Repository  = require('./models/repository.js').Repository,
     Build       = require('./models/build.js').Build,
     resque      = require('./config/resque');
 
+var ObjectId = require('mongoose').Types.ObjectId; 
+
 var Jobs = {
   succeed: function(arg, callback) { callback(); },
   fail: function(arg, callback) { callback(new Error('fail')); },
@@ -11,13 +13,17 @@ var Jobs = {
 
     console.log('Build called; repository_id: ' + repository_id + ' build_id: ' + build_id);
 
-    Repository.findOne({ id: build.repository_id }, function (err, repository) { 
+    Repository.findOne({ '_id': new ObjectId(repository_id) }, function (err, repository) { 
       if(err) throw err;
+
+      console.log('Repository found: ' + repository);
 
       var build = repository.builds.id(build_id);
       build.completed = true;
       repository.save(function (err) { if(err) throw err; });
     });
+
+    console.log('Build finished.');
 
     callback(build);
   } 
