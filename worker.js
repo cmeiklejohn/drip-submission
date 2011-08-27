@@ -22,6 +22,13 @@ var Jobs = {
 
       console.log('Repository found: ' + repository);
 
+      // Get the build
+      var build = repository.builds.id(buildId);
+
+      // Start the build
+      build.startedAt = Date.now();
+      repository.save(function (err) { if (err) throw err; });
+
       // setsid: true is giving me "Operation not permitted"
       // do we actually need it though? unclear about clobbering previous sessions...
       var spawn_clone = function(){
@@ -44,8 +51,8 @@ var Jobs = {
       cmds['mkdir'] = spawn('mkdir',['-vp',tmp_dir]);
       cmdout.bind(cmds['mkdir'],'mkdir',spawn_clone);
       
-      // Start the build
-      var build = repository.builds.id(buildId);
+      // Finish the build
+      build.finishedAt = Date.now();
       build.completed = true;
       repository.save(function (err) { if (err) throw err; });
     });
