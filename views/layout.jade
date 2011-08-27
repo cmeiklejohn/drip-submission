@@ -2,7 +2,7 @@
 html(lang="en")
   head
     meta(charset='utf-8')
-    title drip: the expresso testing service
+    title drip: expresso continuous integration
     //if lt IE 9
       script(src="//html5shim.googlecode.com/svn/trunk/html5.js")
     link(rel="stylesheet/less", type="text/css",href="/css/core.less")
@@ -26,14 +26,24 @@ html(lang="en")
       h1 Enter your github repository url to start running them pesky tests ☻
       
       form(method='post', action='/repositories', id='add_repo_form')
-        input(type="text", class="xlarge repository_url_input")
+        input(type="text", class="xlarge repository_url_input", value="http://github.com/visionmedia/jade")
         input(type="submit",class="btn primary large add",value="Add repository")
+
+        h3 Drip is continuous integration for expresso.
         div(class="error_message")
 
     script(type="text/template", id="repository_list_template")
       aside(class="repository_list")
         ul
-      div(class="pane") Please select a repository on the left
+      div(class="pane") 
+        div(class="select_repository") Please select a repository on the left
+
+    script(type="text/template", id="repository_show_template")
+      div(class="pane_header") 
+        <%= name %>
+        div(class="build_result"
+
+    script(type="text/template", id="build_list_template")
 
   body
     != body

@@ -57,8 +57,8 @@ var RepositoryListItemView = Backbone.View.extend({
 
   show: function () {
     var repository = new Repository(this.model.attributes);
-    //appRouter.navigate("/" + this.model.get("ownerName") + "/" + this.model.get("name"));
-    new RepositoryView({model: repository});
+    appRouter.navigate("/" + this.model.get("ownerName") + "/" + this.model.get("name"));
+    new RepositoryView({model: repository}).render();
     repository.fetch();
   }
 
