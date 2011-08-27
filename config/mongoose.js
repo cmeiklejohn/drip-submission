@@ -1,6 +1,8 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    app      = require('../server'),
+    url      = app.set('credentials').mongohq.url;
 
-mongoose.connect('mongodb://drip:drip2011@staff.mongohq.com:10075/drip', function(err) { 
+mongoose.connect(url, function(err) { 
   if (err) throw err;
   console.log('Connected to MongoHQ');
 });

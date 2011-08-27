@@ -1,9 +1,10 @@
-var resque = require('coffee-resque');
+var resque = require('coffee-resque'),
+    app = require('../server');
 
 module.exports = resque.connect({ 
   host: 'carp.redistogo.com',
-  port: 9215,
-  password: '3346ba780beb1f72e76a491fa6abb9ed'
+  port: app.set('credentials').redistogo.port,
+  password: app.set('credentials').redistogo.password
 });
 
 console.log('Connected to Redis To Go');

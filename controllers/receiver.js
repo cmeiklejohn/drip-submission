@@ -3,36 +3,23 @@ var Repository  = require('../models/repository.js').Repository,
     resque      = require('../config/resque');
 
 module.exports.receive = function (request, response) {
-  if (!request.is('*/json') || !request.body.repository) {
-    console.log("Received invalid post:", request.body);
+  if (!request.body.payload && req.is('application/x-www-form-urlencoded')) { 
+    console.log("Received invalid post:", request.headers['content-type'], request.body);
     response.end();
     return;
   }
- 
-  var repos = request.body.repository;
-  repos.ownerName = repos.owner.name;
+
+  console.log("Post received with payload" + request.body.payload);
+
+  var payload         = JSON.parse(request.body.payload);
+  var repos           = payload.repository;
+  repos.ownerName     = repos.owner.name;
   delete repos.owner;
 
   console.log("Received a post from:", repos.url);
-  Repository.findOne({ url: repos.url }, function (err, repository) { 
-    if (err) throw err;
 
-    if (!repository) {
-      var repository = new Repository(repos);
-      repository.save(function (err) { if (err) throw err; });
-    }
-
-    var build = new Build();
-    repository.builds.push(build);
-
-    repository.save(function (err) { 
-      if (err) throw err; 
-      resque.enqueue('builder', 'build', [{
-        buildId: build.id,
-        repositoryId: repository.id
-      }]);
-    });
-
-    response.send('OK');
+  var createRepository = require('../lib/repositories.js').createRepository;
+  createRepository(repos, function() { 
+    response.send("OK");
   });
 };

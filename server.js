@@ -16,10 +16,24 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+  app.set('credentials',{redistogo:{
+                            password: "af6ea3b7ae7aa630dcb710285fb637a1",
+                            port:     9107},
+                          mongohq:{
+                            url:      "mongodb://drip:drip2011@staff.mongohq.com:10054/drip_development"
+                          }
+                        });
 });
 
 app.configure('production', function(){
   app.use(express.errorHandler()); 
+  app.set('credentials',{redistogo:{
+                            password: "f03a98f500b5d47431e38db0fea0bfe4",
+                            port:     9222},
+                          mongohq:{
+                            url:      "mongodb://drip:drip2011@staff.mongohq.com:10075/drip"
+                          }
+                        });
 });
 
 var Index = require('./controllers/index.js');
@@ -27,10 +41,12 @@ app.get('/', Index.index);
 
 var Repositories = require('./controllers/repositories.js');
 app.get('/repositories', Repositories.list);
-app.get('/repositories/:ownerName', Repositories.show);
+app.post('/repositories', Repositories.create);
+app.get('/repositories/:ownerName', Repositories.list);
+app.get('/repositories/:ownerName/:name', Repositories.show);
 
 var Builds = require('./controllers/builds.js');
-app.get('/repositories/:ownerName/:name', Builds.list);
+app.get('/repositories/:ownerName/:name/builds', Builds.list);
 
 var Receiver = require('./controllers/receiver.js');
 app.post('/receive', Receiver.receive);

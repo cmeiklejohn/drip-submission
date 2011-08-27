@@ -1,8 +1,9 @@
-var Repository  = require('./models/repository.js').Repository,
+var sys         = require('sys'),
+    spawn       = require('child_process').spawn,
+    Repository  = require('./models/repository.js').Repository,
     Build       = require('./models/build.js').Build,
-    resque      = require('./config/resque');
-
-var mongoose = require('./config/mongoose');
+    resque      = require('./config/resque'),
+    mongoose    = require('./config/mongoose');
 
 var ObjectId = require('mongoose').Types.ObjectId; 
 
@@ -10,25 +11,122 @@ var Jobs = {
   succeed:  function (arg, callback) { callback(); },
   fail:     function (arg, callback) { callback(new Error('fail')); },
   build:    function (build, callback) { 
-    var buildId       = build.buildId,
-        repositoryId  = build.repositoryId;
+    var buildId         = build.buildId,
+        repositoryId    = build.repositoryId,
+        build,
+        buildRepository,
+        cmds            = {},
+        outputBuffer    = [],
+        stepsSuccessful = false,
+        workingDir;
 
-    console.log('Build called; repository_id: ' + repositoryId + ' build_id: ' + buildId);
+    console.log('Build called; repositoryId: ' + repositoryId + ' buildId: ' + buildId);
 
     Repository.findOne({ '_id': new ObjectId(repositoryId) }, function (err, repository) { 
       if(err) throw err;
-
+      
       console.log('Repository found: ' + repository);
+      
+      buildRepository = repository;
 
-      var build = repository.builds.id(buildId);
-      build.completed = true;
-      repository.save(function (err) { if (err) throw err; });
+      // Get the build.
+      build = repository.builds.id(buildId);
+
+      // Start the build.
+      var buildStart = function() { 
+        build.startedAt = Date.now();
+        repository.save(function (err) { if (err) throw err; spawnCloneDir(); });
+      };
+
+      // Make clone repo dir.
+      var spawnCloneDir = function() {
+        var name = 'mkdir';
+        workingDir = ['/tmp/', 'dripio', repository.owner_name, repository.name, Date.now()].join('_');
+        cmds[name] = spawn('mkdir',['-vp',workingDir]);
+        cmdOut.bind(name, spawnClone);
+      };
+
+      // Clone.
+      // setsid: true is giving me "Operation not permitted"
+      // do we actually need it though? unclear about clobbering previous sessions...
+      var spawnClone = function(){
+        var name = 'clone';
+        cmds[name] = spawn('git', ['clone',repository.url, workingDir], {cwd: workingDir, setsid: false});
+        cmdOut.bind(name, spawnNpmInstall);
+      };
+      
+      // Setup the environment
+      var spawnNpmInstall = function(){
+        var name = 'clone';
+        cmds[name] = spawn('npm',['install'], {cwd: workingDir});
+        cmdOut.bind(name, spawnMakeTest);
+      };
+
+      // Run tests.
+      var spawnMakeTest = function(){
+        var name = 'make_test';
+        cmds[name] = spawn('make',['test'], {cwd: workingDir});
+        cmdOut.bind(name, buildFinish);
+      };
+
+      // Finish the build
+      // TODO: Update output.
+      // TODO: Update successful.
+      var buildFinish = function() { 
+        build.finishedAt = Date.now();
+        build.completed = true;
+        build.successful = stepsSuccessful;
+        repository.save(function (err) { if (err) throw err; });
+      };
+
+      // Begin.
+      buildStart();
     });
-
+    
     console.log('Build finished.');
 
     callback(build);
-  } 
+    
+    var cmdOut = {
+      bind: function(name,next) {
+        var spawn = cmds[name];
+        this.stdout(spawn,name);
+        this.stderr(spawn,name);
+        this.exit(spawn,name,next);
+      },
+      stdout: function(spawn,name) {
+        spawn.stdout.on('data', function (data) {
+          console.log('stdout '+name+' ['+workingDir+']: ' + data);
+          outputBuffer.push(data);
+        });
+      },
+      stderr: function(spawn,name) {
+        spawn.stderr.on('data', function (data) { console.log('stderr '+name+' ['+workingDir+']: ' + data); });
+        outputBuffer.push(data);
+      },
+      exit: function(spawn,name,next) {
+        spawn.on('exit', function (code) {
+          console.log('exit '+name+' ['+workingDir+'] code: ' + code);
+          
+          build.output = outputBuffer.join('');
+          buildRepository.save(function (err) { if (err) throw err; });
+          
+          if(code === 0) {
+            console.log('clean exit; calling next() is present')
+            stepsSuccessful = true;
+            
+            if (typeof(next) === 'function') {
+              next();
+            }
+          } else {
+            console.log('unclean exit; not progressing to next, typeof: '+typeof(next))
+            stepsSuccessful = false;
+          }
+        });
+      }
+    };
+  }
+  
 };
 
 var worker = resque.worker('builder', Jobs);
