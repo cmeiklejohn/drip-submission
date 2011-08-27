@@ -42,6 +42,7 @@ var Jobs = {
       var spawnCloneDir = function() {
         var name = 'mkdir';
         workingDir = ['/tmp/', 'dripio', repository.owner_name, repository.name, Date.now()].join('_');
+        console.log("making directory ["+workingDir+"]...");
         cmds[name] = spawn('mkdir',['-vp',workingDir]);
         cmdOut.bind(name, spawnClone);
       };
@@ -51,13 +52,15 @@ var Jobs = {
       // do we actually need it though? unclear about clobbering previous sessions...
       var spawnClone = function(){
         var name = 'clone';
+        console.log("cloning ["+repository.url+"]...");
         cmds[name] = spawn('git', ['clone',repository.url, workingDir], {cwd: workingDir, setsid: false});
         cmdOut.bind(name, spawnNpmInstall);
       };
       
       // Setup the environment
       var spawnNpmInstall = function(){
-        var name = 'clone';
+        var name = 'npm_install';
+        console.log("running npm install...");
         cmds[name] = spawn('npm',['install'], {cwd: workingDir});
         cmdOut.bind(name, spawnMakeTest);
       };
@@ -65,6 +68,7 @@ var Jobs = {
       // Run tests.
       var spawnMakeTest = function(){
         var name = 'make_test';
+        console.log("running make test...");
         cmds[name] = spawn('make',['test'], {cwd: workingDir});
         cmdOut.bind(name, buildFinish);
       };
@@ -74,6 +78,7 @@ var Jobs = {
       // TODO: Update successful.
       var buildFinish = function() { 
         build.finishedAt = Date.now();
+        console.log("finishing build at ["+build.finishedAt+"]...");
         build.completed = true;
         build.successful = stepsSuccessful;
         repository.save(function (err) { if (err) throw err; });
@@ -101,8 +106,10 @@ var Jobs = {
         });
       },
       stderr: function(spawn,name) {
-        spawn.stderr.on('data', function (data) { console.log('stderr '+name+' ['+workingDir+']: ' + data); });
-        outputBuffer.push(data);
+        spawn.stderr.on('data', function (data) {
+          console.log('stderr '+name+' ['+workingDir+']: ' + data);
+          outputBuffer.push(data);
+        });
       },
       exit: function(spawn,name,next) {
         spawn.on('exit', function (code) {
@@ -112,7 +119,7 @@ var Jobs = {
           buildRepository.save(function (err) { if (err) throw err; });
           
           if(code === 0) {
-            console.log('clean exit; calling next() is present')
+            console.log('clean exit; calling next() if present')
             stepsSuccessful = true;
             
             if (typeof(next) === 'function') {

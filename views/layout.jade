@@ -5,7 +5,6 @@ html(lang="en")
     title drip: the expresso testing service
     //if lt IE 9
       script(src="//html5shim.googlecode.com/svn/trunk/html5.js")
-    link(rel="stylesheet", href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.1.0.min.css")
     link(rel="stylesheet/less", type="text/css",href="/css/core.less")
     script(src="js/vendor/less-1.1.3.min.js")
     script(src="js/vendor/underscore-min.js")
@@ -16,7 +15,12 @@ html(lang="en")
     script(src="js/app/routers/app_router.js")
     script(src="js/app/models/build.js")
     script(src="js/app/models/repository.js")
+    script(src="js/app/models/repository_list.js")
     script(src="js/app/views/add_repository_view.js")
+    script(src="js/app/views/repository_list_view.js")
+    script(src="js/app/views/repository_view.js")
+    script(src="js/app/views/build_list_view.js")
+    script(src="js/app/views/build_view.js")
 
     script(type="text/template", id="add_repository_tmpl")
       h1 Enter your github repository url to start running them pesky tests ☻
@@ -25,9 +29,16 @@ html(lang="en")
         a(class="btn primary large add") Add repository
         div(class="error_message")
 
+    script(type="text/template", id="repository_list_template")
+      aside(class="repository_list")
+        ul
+      div(class="pane") Please select a repository on the left
+
   body
     != body
 
   script
     var appRouter = new AppRouter();
-    Backbone.history.start();
+    if (!Backbone.history.start()) {
+      console.log("no routes matched");
+    };

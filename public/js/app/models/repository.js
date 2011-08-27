@@ -4,10 +4,20 @@
 
   window.Repository = Backbone.Model.extend({
 
-    url: '/repositories',
+    initialize: function (attrs) {
+      if (attrs._id) {
+        this.id = attrs._id;
+      }
+    },
+
+    // git@github.com:hojberg/routr.js.git
+
+    // url: '/receive',
+    urlRoot: '/repositories',
+
 
     validate: function (attrs) {
-      if (!attrs.githubURL) {
+      if (!attrs.url) {
         return "Please enter a github repository url";
       }
       /*

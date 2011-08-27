@@ -38,8 +38,8 @@ module.exports.list = function (request, response) {
 };
 
 module.exports.show = function (request, response) { 
-  var name = request.params.name;
-  var ownerName = request.params.ownerName;
+  var name = request.params.name,
+      ownerName = request.params.ownerName;
 
   Repository.findOne({ ownerName: ownerName, name: name  }, function (err, repository) { 
     if (err) throw err;
