@@ -16,10 +16,24 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+  app.set('credentials',{redistogo:{
+                            password: "af6ea3b7ae7aa630dcb710285fb637a1",
+                            port:     9107},
+                          mongohq:{
+                            url:      "mongodb://drip:drip2011@staff.mongohq.com:10054/drip_development"
+                          }
+                        });
 });
 
 app.configure('production', function(){
   app.use(express.errorHandler()); 
+  app.set('credentials',{redistogo:{
+                            password: "f03a98f500b5d47431e38db0fea0bfe4",
+                            port:     9222},
+                          mongohq:{
+                            url:      "mongodb://drip:drip2011@staff.mongohq.com:10075/drip"
+                          }
+                        });
 });
 
 var Index = require('./controllers/index.js');
