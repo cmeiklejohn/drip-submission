@@ -1,24 +1,23 @@
-var Repository = require('../models/repository.js').Repository;
-var Build = require('../models/build.js').Build;
-
-var resque = require('../config/resque');
+var Repository  = require('../models/repository.js').Repository,
+    Build       = require('../models/build.js').Build,
+    resque      = require('../config/resque');
 
 module.exports.receive = function(request, response) {
-  if(!request.is('*/json') || !request.body.repository) {
+  if (!request.is('*/json') || !request.body.repository) {
     console.log("Received invalid post:", request.body);
     response.end();
     return;
   }
  
-  var url = request.body.repository.url;
-  var name = request.body.repository.name;
-  var owner_name = request.body.repository.owner.name;
+  var url         = request.body.repository.url,
+      name        = request.body.repository.name,
+      owner_name  = request.body.repository.owner.name;
 
   console.log("Received a post from:", url);
-  Repository.findOne({ url: url }, function(err, repository) { 
-    if(err) throw err;
+  Repository.findOne({ url: url }, function (err, repository) { 
+    if (err) throw err;
 
-    if(!repository) {
+    if (!repository) {
       var repository = new Repository();
       repository.url = url;
       repository.name = name;
@@ -29,10 +28,10 @@ module.exports.receive = function(request, response) {
     var build = new Build();
     repository.builds.push(build);
     repository.save(function (err) { 
-      if(err) throw err; 
+      if (err) throw err; 
       resque.enqueue('builder', 'build', JSON.stringify({ 
-        repository_id: repository.id,
-        build_id: build.id
+        repository_id:  repository.id,
+        build_id:       build.id
       }));
     });
 
