@@ -31,24 +31,13 @@ app.configure('production', function(){
 var Schema = mongoose.Schema, 
     ObjectId = Schema.ObjectId;
 
-var Repository = new Schema({ 
-  uri: { type: String, index: true, validate: function(v) { return v.length > 0 } },
+var Repository = mongoose.model('Repository', new Schema({ 
+  url: { type: String, index: true, validate: function(v) { return v.length > 0 } },
   builds: [Build]
-});
+}));
 
-Repository.pre('save', function (next) {
-  console.log('Saving repository!');
-  next();
-});
-
-var Build = new Schema({ 
-
-});
-
-Build.pre('save', function (next) {
-  console.log('Saving build!');
-  next();
-});
+var Build = mongoose.model('Build', new Schema({ 
+}));
 
 // App routes.
 //
@@ -58,16 +47,31 @@ app.get('/', function(request, response) {
 
 app.post('/receive', function(request, response) {
   if(!request.is('*/json') || !request.body.repository) {
-    console.log("received invalid post:", request.body);
+    console.log("Received invalid post:", request.body);
     response.end();
     return;
   }
   
-  console.log("received a post from:", request.body.repository.url);
-  // TODO: fire off a new build!
-    
-});
+  console.log("Received a post from:", request.body.repository.url);
+  Repository.findOne({ url: request.body.repository.url }, function(err, doc) { 
+    if(err) throw err;
 
+    if(doc) {
+      console.log("Found repository: " + doc);
+    } else { 
+      console.log("No repository found, creating new.");
+
+      var repository = new Repository();
+      repository.url = request.body.repository.url;
+      repository.save(function (err) {
+        if(err) throw err;
+        console.log("Created!");
+      });
+    }
+  });
+
+  response.end();
+});
 
 // Things to not do when we're testing.
 //
