@@ -8,7 +8,7 @@ module.exports.list = function (request, response) {
 };
 
 module.exports.show = function (request, response) { 
-  var owner_name = request.params.ownerName;
+  var ownerName = request.params.ownerName;
 
   Repository.find({ ownerName: ownerName }, function (err, repositories) { 
     if (err) throw err;
