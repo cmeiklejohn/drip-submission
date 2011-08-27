@@ -25,7 +25,7 @@ var Jobs = {
     Repository.findOne({ '_id': new ObjectId(repositoryId) }, function (err, repository) { 
       if(err) throw err;
       
-      console.log('Repository found: ' + repository);
+      console.log('Repository found, id:['+repository._id+'] url:['+repository.url+'], num builds:['+repository.builds.length+']');
       
       buildRepository = repository;
 
@@ -41,7 +41,7 @@ var Jobs = {
       // Make clone repo dir.
       var spawnCloneDir = function() {
         var name = 'mkdir';
-        workingDir = ['/tmp/', 'dripio', repository.owner_name, repository.name, Date.now()].join('_');
+        workingDir = ['/tmp/', 'dripio', repository.ownerName, repository.name, Date.now()].join('_');
         console.log("making directory ["+workingDir+"]...");
         cmds[name] = spawn('mkdir',['-vp',workingDir]);
         cmdOut.bind(name, spawnClone);
