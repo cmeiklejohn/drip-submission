@@ -1,29 +1,39 @@
 var AppRouter = Backbone.Router.extend({
 
   routes: {
-    "":                   "root",
-    "!/repositories/new": "addRepository",
-    "!/repositories":     "repositories"
+    "": "root",
+    "/repositories/new": "repositories.add",
+    "/repositories":     "repositoriesList",
+    "/:ownerName/":       "repositoriesList",
+    "/:ownerName/:name":  "repositories.show"
+  },
+
+  beforeFilter: function () {
+    var repositoryList = new RepositoryList();
+    var repositoryListView = new RepositoryListView({
+      collection: repositoryList
+    });
+
+    repositoryList.fetch();
   },
 
   root: function () {
-    this.navigate("!/repositories/new", true);
+    this.navigate("/repositories/new", true);
   },
 
-  addRepository: function () {
+  repositoriesAdd: function () {
     var addRepositoryView = new AddRepositoryView({
       model: new Repository()
     });
     $("#main_content").html(addRepositoryView.render().el);
   },
 
-  respositories: function () {
-    var repositoryList = new RepositoryView(),
-        repositoryView = new RepositoryView({
-      collection: repositoryList
-    });
+  repositoriesList: function (ownerName) {
+    console.log("here");
+    this.beforeFilter(ownerName);
+  },
 
-    repositoryList.fetch();
+  repositoriesShow: function (ownerName, name) {
+    this.beforeFilter(ownerName);
   }
-
 });
