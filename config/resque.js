@@ -4,7 +4,7 @@ var resque = require('coffee-resque'),
 module.exports = resque.connect({ 
   host: 'carp.redistogo.com',
   port: app.set('credentials').redistogo.port,
-  password: app.set('credentials').redistogo.redistogo
+  password: app.set('credentials').redistogo.password
 });
 
 console.log('Connected to Redis To Go');
