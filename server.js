@@ -3,9 +3,6 @@ var nko       = require('nko')('+jzq0Dm9hbErZbrq'),
 
 var app = module.exports = express.createServer();
 
-// Load socket.io
-var io  = require('socket.io').listen(app);
-
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.use(express.static(__dirname + '/public'));
@@ -62,6 +59,16 @@ var Receiver = require('./controllers/receiver.js');
 app.post('/receive', Receiver.receive);
 
 var mongoose = require('./config/mongoose');
+
+var io                = require('socket.io').listen(app),
+    RepositorySchema  = require('./models/repository.js');
+
+io.sockets.on('connection', function(socket) {
+  RepositorySchema.pre('save', function(next) {
+    socket.emit('repository', { 'repository': this }); 
+    next();
+  });
+});
 
 if(!module.parent) {
   app.listen(process.env.NODE_ENV === 'production' ? 80 : 8000, function() {
