@@ -9,7 +9,12 @@ module.exports.list = function (request, response) {
 
   Repository.findOne({ ownerName: ownerName, name: name }, function (err, repository) { 
     if (err) throw err;
-    response.send(repository.builds);
+   
+    if(repository && repository.builds) {
+      response.send(repository.builds);
+    } else {
+      reponse.end();
+    }
   });
 };
 
@@ -21,16 +26,24 @@ module.exports.show = function (request, response) {
   Repository.findOne({ ownerName: ownerName, name: name }, function (err, repository) { 
     if (err) throw err;
 
-    var build = repository.builds.id(id);
+    if(repository && repository.builds) { 
+      var build = repository.builds.id(id);
 
-    redis.lrange("builds:" + build.id, 0, -1, function(err, output) {
-      if (err) throw err;
+      if(build) {
+        redis.lrange("builds:" + build.id, 0, -1, function(err, output) {
+          if (err) throw err;
 
-      console.log("Retrieved output from redis for build log!");
+          console.log("Retrieved output from redis for build log!");
 
-      build.output = output.join('');
+          build.output = output.join('');
 
-      response.send(build);
-    });
+          response.send(build);
+        });
+      } else { 
+        response.end();
+      }
+    } else {
+      response.end();
+    }
   });
 };

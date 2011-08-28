@@ -12,7 +12,8 @@ var BuildView = Backbone.View.extend({
     this.el = $(this.el);
     var tmpl = $(_.template($("#build_view_template").html(), {
           label: this.model.get("label"),
-          output: this.parsedOutput()
+          output: this.parsedOutput(),
+          branch: this.model.get("branch")
         })),
         outputNode;
 
