@@ -15,10 +15,16 @@ module.exports.create = function(request, response) {
   repos.ownerName     = repos.owner.name;
   delete repos.owner;
 
-  // Sanitize the url.
-  repos.url           = repos.url.replace('.git', '');
+  // Sanitize the url of .git if it's a http origin, but not of a ssh
+  // origin.
+  //
+  if(repos.url.indexOf('http') == 0) { 
+    console.log("Sanitizing url");
+    repos.url = repos.url.replace(/\.git$/,"");
+  }
 
   console.log("Received a post from:", repos.url);
+  console.log("Received build request for: " + repos.ownerName + "/" + repos.name);
 
   var createRepository = require('../lib/repositories.js').createRepository;
   createRepository(repos, function() { 

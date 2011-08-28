@@ -23,11 +23,11 @@ var AddRepositoryView = Backbone.View.extend({
     
     var input             = this.$(".repository_url_input"),
         errorMessageNode  = this.$(".error_message"),
-        url               = input.val().replace(/\.git$/,""),
+        url               = input.val(),
         urlChunks         = url.split('/'),
-        name              = urlChunks[urlChunks.length-1],
+        name              = urlChunks[urlChunks.length-1].replace(/\.git$/,""),
         ownerName         = urlChunks[urlChunks.length-2];
-    
+
     this.reset();
 
     this.model.bind("error", function (model, error) {
