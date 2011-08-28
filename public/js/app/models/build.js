@@ -3,6 +3,9 @@ var Build = Backbone.Model.extend({
 
   initialize: function (attrs) {
     if (attrs._id) { this.id = attrs._id; }
+
+    var label = new Date(attrs.receivedAt).getTime();
+    this.set({"label": label}, {silent: true});
   },
   
   url: function () {

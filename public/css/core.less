@@ -19,15 +19,17 @@ html, body                                              { background: @canvas ur
 
 /* =SHARED
 ================================================== */
-.pane                                                   { background: @background; color: @foreground; position: absolute; top: 0; right: 0; bottom: 0; left: 200px; overflow-y: auto;
+.pane                                                   { background: @background; color: @foreground; position: absolute; top: 0; right: 0; bottom: 0; left: 200px; 
   .border-radius;
   .box-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
   text-shadow: 0px 1px 1px @white;
 }
 
-.pane::-webkit-scrollbar { width: 8px; }
-.pane::-webkit-scrollbar-track { background: transparent; }
-.pane::-webkit-scrollbar-thumb { border-radius: 10px; background: #aaa; }
+.scroll_view                                            { overflow-y: auto; position: absolute; top: 84px; right: 0; bottom: 0; left: 0; }
+
+.scroll_view::-webkit-scrollbar                         { width: 8px; }
+.scroll_view::-webkit-scrollbar-track                   { background: transparent; }
+.scroll_view::-webkit-scrollbar-thumb                   { border-radius: 10px; background: #aaa; }
 
 .pane_header                                            { padding: 10px 20px 15px 20px; color: @white; font-size: 20px; line-height: 20px;
   .gradientBar(@blue, @blueDark);
@@ -120,16 +122,19 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
 
 /* --- build list view --- */
 .build_list                                             { list-style: none; margin: 0; }
-.builds .build_list_item                            { padding: 10px 20px; cursor: pointer; 
+.build_history_list                                     { top: 162px; }
+.builds .build_list_item                                { padding: 10px 20px; cursor: pointer; 
   .gradientBar(@grayLighter, lighten(@grayLight, 5%));
   color: #333;
   text-shadow: 0px 1px 1px @white;
   border-bottom: 1px solid #aaa; 
   border-top: 1px solid #fff; 
 }
-.builds .build_list_item:hover                      { color: #000;}
-.builds .failure                                    { text-shadow: 0 0 5px @failred }
-.builds .success                                    { text-shadow: 0 0 5px @successgreen }
-.builds .unknown                                    { text-shadow: 0 0 5px @lightyellow }
+.builds .build_list_item:hover                          { color: #000;}
+.builds .failure                                        { text-shadow: 0 0 5px @failred }
+.builds .success                                        { text-shadow: 0 0 5px @successgreen }
+.builds .unknown                                        { text-shadow: 0 0 5px @lightyellow }
 
-.latest_build_results                                   { padding: 20px; }
+
+/* --- build view --- */
+.build_output                                           { font-size: 12px; padding: 10px 20px; #font > .monospace }
