@@ -31,7 +31,7 @@ var BuildView = Backbone.View.extend({
   
   parsedOutput: function() {
     // TODO: parse ansi sequences
-    return this.model.get("output").replace(/\n/g,'<br>');
+    return this.model.get("output").replace(/\n/g,'<br>').replace(/\033\[[0-9;]*m/g,"").replace(/✓/g, "<span class='green'>✓</span>");
   }
 
 });
