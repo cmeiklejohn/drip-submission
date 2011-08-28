@@ -10,6 +10,7 @@ var AppRouter = Backbone.Router.extend({
   },
 
   beforeFilter: function () {
+    $("#main_logo").show();
     var appView = new AppView().render();
     var repositoryList = new RepositoryList();
     var repositoryListView = new RepositoryListView({
