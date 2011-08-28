@@ -28,6 +28,11 @@ var Build = Backbone.Model.extend({
     url.push(this.id);
     
     return url.join('/');
+  },
+
+  status: function () {
+    var state = (this.get("completed") ? (this.get("successful") ? "success" : "failure") : (this.get("running") ? "running" : "unknown"));
+    return state;
   }
   
 });

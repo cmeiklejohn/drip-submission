@@ -144,4 +144,8 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
 
 
 /* --- build view --- */
-.build_output                                           { font-size: 12px; padding: 10px 20px; #font > .monospace }
+.build_output                                           { background: #222; color: @white; font-size: 12px; padding: 10px 20px; #font > .monospace; margin-top: -1px;
+  text-shadow: 0px 1px 1px @black;
+}
+
+.build_output::-webkit-scrollbar-thumb                   { border-radius: 10px; background: #444 !important; border-top: 1px solid #777; border-bottom: 1px solid #333; }

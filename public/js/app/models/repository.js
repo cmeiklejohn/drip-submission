@@ -19,8 +19,8 @@ var Repository = Backbone.Model.extend({
       // enrich builds with repository meta data
       _.each(builds, function (b) {
         b.repository = {
-          name: repo.get("name"),
-          ownerName: repo.get("ownerName")
+          name:       repo.get("name"),
+          ownerName:  repo.get("ownerName")
         };
         bl.add(new Build(b))
       });
@@ -61,8 +61,8 @@ var Repository = Backbone.Model.extend({
   
   isSuccessful: function () {
     var successful = true;
-    if (this.builds) {
-      
+    if (this.get("buildList")) {
+      successful = (this.get("buildList").at(0).status() === "successful");
     }
     return successful;
   }

@@ -10,11 +10,13 @@ var BuildView = Backbone.View.extend({
 
   render: function () {
     this.el = $(this.el);
-    var tmpl = _.template($("#build_view_template").html(), {
+    var tmpl = $(_.template($("#build_view_template").html(), {
           label: this.model.get("label"),
           output: this.parsedOutput()
-        }),
+        })),
         pane = $(".pane.build_details");
+
+    tmpl.find(".build_result").addClass(this.model.status());
 
     this.el.html(tmpl);
 
