@@ -4,5 +4,5 @@ var mongoose = require('mongoose'),
 
 module.exports = mongoose.connect(url, function(err) { 
   if (err) throw err;
-  console.log('Connected to MongoHQ');
+  console.log('Connected to Mongo');
 });
