@@ -1,1 +1,3 @@
-var BuildList = Backbone.Collection.extend({});
+var BuildList = Backbone.Collection.extend({
+  model: Build
+});

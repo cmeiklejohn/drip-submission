@@ -21,10 +21,15 @@ html, body                                              { background: @canvas ur
 
 .pane_header                                            { padding: 10px 20px 15px 20px; color: @white; font-size: 20px; line-height: 20px;
   .gradientBar(@blue, @blueDark);
-  text-shadow: 0px 1px 2px @black;
+  text-shadow: 0px 1px 2px fadeout(@black, 60);
   -webkit-border-radius: 5px 5px 0 0;
      -moz-border-radius: 5px 5px 0 0;
           border-radius: 5px 5px 0 0;
+}
+
+.sub_header                                             { padding: 10px 20px; color: @white;
+  .gradientBar(@grayLight, @gray);
+  text-shadow: 0px 1px 2px fadeout(@black, 90);
 }
 
 input[type="text"].error, input[type="password"].error, textarea.error { border-color: #C87872;
@@ -92,3 +97,8 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
 }
 .pane_header .build_result.success                      { background: @green; }
 .pane_header .build_result.failure                      { background: @red; }
+
+/* --- build list view --- */
+.build_list                                             { list-style: none; margin: 0; }
+.build_list .build_list_item                            { list-style: none; padding: 10px 20px; border-bottom: 1px solid #ccc; border-top: #fff; cursor: pointer; }
+.build_list .build_list_item:hover                      { background: lighten(#ddd, 3.5%); }
