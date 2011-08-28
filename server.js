@@ -18,8 +18,8 @@ app.configure('test', 'development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
   app.set('credentials',{redistogo:{
                             host: 'carp.redistogo.com',
-                            password: "af6ea3b7ae7aa630dcb710285fb637a1",
-                            port:     9107},
+                            password: "44971d14e4eb61cf163bf0af6933b6ef",
+                            port:     9245},
                           mongohq:{
                             url:      "mongodb://drip:drip2011@staff.mongohq.com:10054/drip_development"
                           }
