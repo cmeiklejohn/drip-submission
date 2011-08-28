@@ -27,13 +27,6 @@ html(lang="en")
     script(src="/socket.io/socket.io.js")
     script  
       window.socket = io.connect();
-      /*
-      window.socket.on('repository', function (data) {
-        console.log("this other one");
-        console.log('socket.io received data:' + data);
-      });
-      */
-
 
     script(type="text/template", id="add_repository_tmpl")
       div(class="main_logo")
@@ -50,7 +43,7 @@ html(lang="en")
     script(type="text/template", id="repository_list_template")
       aside(class="repository_list")
         ul
-      a(class="show_add_new_repo", href="#/repositories/new") +
+      a(href="#/repositories/new", class="show_add_new_repo btn small primary") Add repository
         
       div(class="pane") 
         div(class="select_repository") Please select a repository on the left
