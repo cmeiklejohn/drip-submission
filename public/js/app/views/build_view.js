@@ -5,10 +5,11 @@ var BuildView = Backbone.View.extend({
 
   initialize: function () {
     _.bindAll(this);
-    this.model.bind("change", this.render);
+    this.model.bind("change:output", this.render);
   },
 
   render: function () {
+    console.log("render thing");
     this.el = $(this.el);
     var tmpl = $(_.template($("#build_view_template").html(), {
           label: this.model.get("label"),
@@ -26,6 +27,11 @@ var BuildView = Backbone.View.extend({
     else {
       $(".pane").append(this.el);
     }
+
+    var objDiv = $(".build_output").get(0);
+    objDiv.scrollTop = objDiv.scrollHeight;
+    
+
     return this;
   },
   

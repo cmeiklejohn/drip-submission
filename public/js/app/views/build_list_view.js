@@ -7,6 +7,7 @@ var BuildListView = Backbone.View.extend({
   },
 
   render: function () {
+    console.log("render list");
     var el = this.el = $(this.el),
         frag = $( $("#build_list_template").html() ),
         latestBuildNode = frag.find(".latest_build"),
@@ -44,10 +45,13 @@ var BuildListItemView = Backbone.View.extend({
 
   initialize: function () {
     _.bindAll(this);
+    this.model.bind("change:completed", this.render);
   },
 
   render: function () {
+    console.log("render item");
     var el = this.el = $(this.el);
+    el.removeClass("running");
     el.addClass(this.model.status());
     el.html("<span class='build_icon'></span>" + this.model.get("label"));
     return this;
