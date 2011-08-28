@@ -17,7 +17,7 @@ app.configure(function(){
   app.set('view engine', 'jade');
 });
 
-app.configure('development', function(){
+app.configure('test', 'development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
   app.set('credentials',{redistogo:{
                             password: "af6ea3b7ae7aa630dcb710285fb637a1",
