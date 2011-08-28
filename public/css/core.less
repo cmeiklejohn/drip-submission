@@ -1,5 +1,7 @@
 @import "bootstrap/bootstrap.less";
 
+.clearfix { margin-bottom: 0px; }
+
 /* =VARIABLES
 ================================================== */
 @canvas: #333;
@@ -58,8 +60,8 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
 
 /* =LAYOUT
 ================================================== */
-#main_logo                                              { margin-left: 30px; background: url(/img/driplogo.png) no-repeat; width: 200px; height: 100px; }
-#main_content                                           { position: absolute; top: 100px; right: 40px; bottom: 40px; left: 40px; }
+#main_logo                                              { margin: auto; background: url(/img/driplogo.png) no-repeat; width: 138px; height: 88px; margin-top: 20px;}
+#main_content                                           { position: absolute; top: 120px; right: 40px; bottom: 40px; left: 40px; }
 
 /* =STATES
 ================================================== */
@@ -111,7 +113,7 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
 }
 .repository_list ul li:hover                            { color: @grayLight; background: fadeout(@black, 90%); border-top: 1px solid fadeout(@black, 80%); }
 .repository_list ul li:first-child                      { border-top: 0; }
-.repository_list ul li.owner_name                       { color: @white; padding: 5px 10px; margin-bottom: 0px; }
+.repository_list ul li.owner_name                       { color: @white; padding: 5px 10px; }
 .repository_list ul li.owner_name span.user_icon        { width: 16px; height: 16px; background: url(/img/user_icon.png) no-repeat center; display: inline-block; margin-right: 10px; float: left; margin-top: 1px;
   opacity: 0.3; 
 }
@@ -135,9 +137,11 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
   border-top: 1px solid #fff; 
 }
 .builds .build_list_item:hover                          { color: #000;}
-.builds .failure                                        { text-shadow: 0 0 5px @failred }
-.builds .success                                        { text-shadow: 0 0 5px @successgreen }
-.builds .unknown                                        { text-shadow: 0 0 5px @lightyellow }
+.builds .build_icon                                     { float: left; width: 16px; height: 16px; display: inline-block; margin-right: 10px; margin-top: 1px; }
+.builds .failure .build_icon                            { background: url(/img/failed_icon.png); }
+.builds .success .build_icon                            { background: url(/img/success_icon.png); }
+.builds .unknown .build_icon                            { background: url(/img/unknown_icon.png); }
+
 
 /* --- build view --- */
 .build_output                                           { font-size: 12px; padding: 10px 20px; #font > .monospace }

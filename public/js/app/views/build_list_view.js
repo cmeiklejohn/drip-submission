@@ -50,7 +50,7 @@ var BuildListItemView = Backbone.View.extend({
     var el = this.el = $(this.el);
     var stateClass = (this.model.get("completed") ? (this.model.get("successful") ? "success" : "failure") : (this.model.get("running") ? "running" : "unknown"));
     el.addClass(stateClass);
-    el.html(this.model.get("label"));
+    el.html("<span class='build_icon'></span>" + this.model.get("label"));
     return this;
   },
 
