@@ -8,12 +8,17 @@ var RepositoryListView = Backbone.View.extend({
 
   render: function () {
     var innerNode = $(".repositories").find(".repository_list ul");
-        groups = this.collection.toArray();
+        groups = this.collection.groupBy(function (r) {
+          return r.get("ownerName");
+        });
   
-    _.each(groups, function (repository) {
-      innerNode.append(new RepositoryListItemView({
-        model: repository
-      }).render().el);
+    _.each(groups, function (repositories, ownerName) {
+      innerNode.append("<li class='clearfix owner_name'><span class='user_icon'></span>" + ownerName + "</li>");
+      _.each(repositories, function (repository) {
+        innerNode.append(new RepositoryListItemView({
+          model: repository
+        }).render().el);
+      });
     });
 
     return this;
@@ -41,7 +46,7 @@ var RepositoryListItemView = Backbone.View.extend({
   },
 
   render: function () {
-    $(this.el).html(this.model.get("ownerName") + "/" + this.model.get("name"));
+    $(this.el).html(this.model.get("name"));
     return this;
   },
 
