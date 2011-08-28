@@ -29,8 +29,11 @@ html, body                                              { background: @canvas ur
 
 .scroll_view                                            { overflow-y: auto; position: absolute; top: 84px; right: 0; bottom: 0; left: 0; }
 
-.scroll_view::-webkit-scrollbar                         { width: 8px; }
+.scroll_view::-webkit-scrollbar                         { width: 8px; height: 8px; }
 .scroll_view::-webkit-scrollbar-track                   { background: transparent; }
+.scroll_view::-webkit-scrollbar-track-piece             { background: transparent; }
+.scroll_view::-webkit-scrollbar-corner                  { background: transparent; }
+.scroll_view::-webkit-resizer                           { background: transparent; }
 .scroll_view::-webkit-scrollbar-thumb                   { border-radius: 10px; background: #aaa; }
 
 .pane_header                                            { padding: 10px 20px 15px 20px; color: @white; font-size: 20px; line-height: 20px;
@@ -129,9 +132,8 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
 .repository_list ul li.unknown  .build_result           { background: url(/img/unknown_icon.png); }
 
 
-.show_add_new_repo                                      { display: inline-block; margin: 10px; cursor: pointer; position: absolute; bottom: -18px; left: 40px; 
+.add_new_repo_button                                    { display: inline-block; margin: 10px; cursor: pointer; position: absolute; bottom: -42px; left: 40px; 
   font-size: 12px !important;
-  .box-shadow(0 1px 2px fadeout(@black, 50%));
   font-weight: bold; 
 }
 
@@ -172,6 +174,7 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
   text-shadow: 0px 1px 1px @black;
 }
 
-.build_output::-webkit-scrollbar-thumb                   { border-radius: 10px; background: #444 !important; border-top: 1px solid #777; border-bottom: 1px solid #333; }
+.build_output::-webkit-scrollbar                        { width: 6px; height: 8px; }
+.build_output::-webkit-scrollbar-thumb                  { border-radius: 10px; background: #444 !important; border-top: 1px solid #777; border-bottom: 1px solid #333; }
 
 .green { color: @green; }
