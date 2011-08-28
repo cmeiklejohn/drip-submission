@@ -24,7 +24,7 @@ var RepositoryListView = Backbone.View.extend({
     return this;
   },
 
-  add: function () {
+  add: function (repository) {
     $(this.el).find(".repository_list ul").append(new RepositoryListItemView({
       model: repository
     }).render().el);

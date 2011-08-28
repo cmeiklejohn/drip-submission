@@ -25,6 +25,15 @@ html(lang="en")
     script(src="js/app/views/build_view.js")
 
     script(src="/socket.io/socket.io.js")
+    script  
+      window.socket = io.connect('http://localhost');
+      /*
+      window.socket.on('repository', function (data) {
+        console.log("this other one");
+        console.log('socket.io received data:' + data);
+      });
+      */
+
 
     script(type="text/template", id="add_repository_tmpl")
       div(class="main_logo")
