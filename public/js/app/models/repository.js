@@ -34,7 +34,7 @@ var Repository = Backbone.Model.extend({
     
     if(!this.isNew()) {
       // when an existing instance: /repositories/:ownerName/:id
-      url = base + this.owner.name + '/' + this.id;
+      url = base + ((this.owner ? this.owner.name : null) || this.get('ownerName')) + '/' + this.id;
     }
     
     return url;
