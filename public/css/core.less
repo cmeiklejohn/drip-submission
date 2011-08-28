@@ -7,13 +7,16 @@
 @foreground: #333;
 @background: #eee;
 
+@lightgreen: #efffef;
+@lightred: #ffebeb;
+
 /* =BROWSER
 ================================================== */
 html, body                                              { background: @canvas url(/img/noisebg.png);  }
 
 /* =SHARED
 ================================================== */
-.pane                                                   { background: @background; color: @foreground; position: absolute; top: 0; right: 0; bottom: 0; left: 200px;
+.pane                                                   { background: @background; color: @foreground; position: absolute; top: 0; right: 0; bottom: 0; left: 200px; overflow-y: auto;
   .border-radius;
   .box-shadow(0 1px 3px rgba(0, 0, 0, 0.4));
   text-shadow: 0px 1px 1px @white;
@@ -21,15 +24,24 @@ html, body                                              { background: @canvas ur
 
 .pane_header                                            { padding: 10px 20px 15px 20px; color: @white; font-size: 20px; line-height: 20px;
   .gradientBar(@blue, @blueDark);
-  text-shadow: 0px 1px 2px @black;
+  text-shadow: 0px 1px 2px fadeout(@black, 60);
   -webkit-border-radius: 5px 5px 0 0;
      -moz-border-radius: 5px 5px 0 0;
           border-radius: 5px 5px 0 0;
+  border-top: 1px solid fadeout(@white, 50%);
+}
+
+.sub_header                                             { padding: 10px 20px; color: @white;
+  .gradientBar(@grayLight, @gray);
+  text-shadow: 0px 1px 2px fadeout(@black, 90);
 }
 
 input[type="text"].error, input[type="password"].error, textarea.error { border-color: #C87872;
   .box-shadow(0 0 3px rgba(171, 41, 32, 0.25));
 }
+
+.success                                                { background: @lightgreen; }
+.failure                                                { background: @lightred; }
 
 
 /* =LAYOUT
@@ -90,5 +102,10 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
   .box-shadow(inset 0 1px 4px rgba(0, 0, 0, 0.5));
   .border-radius(15px);
 }
-.pane_header .build_result.success                      { background: @green; }
-.pane_header .build_result.failure                      { background: @red; }
+
+/* --- build list view --- */
+.build_list                                             { list-style: none; margin: 0; }
+.build_list .build_list_item                            { list-style: none; padding: 10px 20px; border-bottom: 1px solid #ccc; border-top: #fff; cursor: pointer; }
+.build_list .build_list_item:hover                      { background: lighten(#ddd, 3.5%); }
+
+.latest_build_results                                   { padding: 20px; }

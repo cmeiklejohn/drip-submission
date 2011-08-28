@@ -103,22 +103,26 @@ var Jobs = {
       stdout: function(spawn,name) {
         spawn.stdout.on('data', function (data) {
           console.log('stdout '+name+' ['+workingDir+']: ' + data);
-          redis.lpush(build.id.toString(), data, function() { console.log("Issued write to redis");});
+          redis.lpush("builds:" + build.id, data, function() { console.log("Issued write to redis");});
           outputBuffer.push(data);
         });
       },
       stderr: function(spawn,name) {
         spawn.stderr.on('data', function (data) {
           console.log('stderr '+name+' ['+workingDir+']: ' + data);
-          redis.lpush(build.id.toString(), data, function() { console.log("Issued write to redis");});
+          redis.lpush("builds:" + build.id, data, function() { console.log("Issued write to redis");});
           outputBuffer.push(data);
         });
       },
       exit: function(spawn,name,next) {
         spawn.on('exit', function (code) {
           console.log('exit '+name+' ['+workingDir+'] code: ' + code);
-          
-          build.output = outputBuffer.join('');
+         
+          // Temporarily disable outputBuffer saving into the mongo
+          // document as it might overload the document size and is
+          // super slow.
+          //
+          // build.output = outputBuffer.join('');
           buildRepository.save(function (err) { if (err) throw err; });
           
           if(code === 0) {

@@ -14,6 +14,7 @@ html(lang="en")
     
     script(src="js/app/routers/app_router.js")
     script(src="js/app/models/build.js")
+    script(src="js/app/models/build_list.js")
     script(src="js/app/models/repository.js")
     script(src="js/app/models/repository_list.js")
     script(src="js/app/views/app_view.js")
@@ -28,7 +29,6 @@ html(lang="en")
         input(type="text", class="xlarge repository_url_input", value="http://github.com/visionmedia/jade")
         input(type="submit",class="btn primary large add",value="Run 'em, Danno")
         div(class="error_message")
-
         h3 Drip is continuous integration for expresso.
 
     script(type="text/template", id="repository_list_template")
@@ -43,11 +43,13 @@ html(lang="en")
         div(class="build_result")
 
     script(type="text/template", id="build_list_template")
-      div(class="last_build")
-      div(class="build_history")
-        div(class="sub_header") History
-          ul(class="build_list")
-            
+      div(class="builds")
+        div(class='latest_build')
+          div(class='sub_header') Latest build
+
+        div(class='build_history')
+          div(class='sub_header') History
+          ul(class='build_list')
 
   body
     != body

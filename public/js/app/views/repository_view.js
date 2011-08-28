@@ -27,9 +27,9 @@ var RepositoryView = Backbone.View.extend({
 
     el.html(frag);
 
-    if (this.model.get("builds") && this.model.get("builds").length > 0) { 
+    if (this.model.builds && this.model.builds.length > 0) { 
       el.append(new BuildListView({
-        collection: this.model.get("builds")
+        collection: this.model.builds
       }).render().el);
     }
     else {
