@@ -21,12 +21,14 @@ module.exports.show = function (request, response) {
   Repository.findOne({ ownerName: ownerName, name: name }, function (err, repository) { 
     if (err) throw err;
 
+    var build = repository.builds.id(id);
+
     redis.lrange("builds:" + build.id, 0, -1, function(err, output) {
       if (err) throw err;
 
-      var build = repository.builds.id(id);
-
       console.log("Retrieved output from redis for build log: " + output);
+
+      build.output = output;
 
       response.send(build);
     });
