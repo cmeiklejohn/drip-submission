@@ -3,8 +3,12 @@ var Build = Backbone.Model.extend({
 
   initialize: function (attrs) {
     if (attrs._id) { this.id = attrs._id; }
+    this.bind("change:receivedAt", this.setLabel, this);
+    this.setLabel();
+   },
 
-    var label = new Date(attrs.receivedAt).getTime();
+  setLabel: function () {
+    var label = new Date(this.get("receivedAt")).getTime();
     this.set({"label": label}, {silent: true});
   },
   
