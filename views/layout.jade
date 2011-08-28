@@ -43,10 +43,13 @@ html(lang="en")
         div(class="build_result")
 
     script(type="text/template", id="build_list_template")
-      div(class="last_build")
-      div(class="build_history")
-        div(class="sub_header") History
-        ul(class="build_list")
+      div(class="builds")
+        div(class='latest_build')
+          div(class='sub_header') Latest build
+
+        div(class='build_history')
+          div(class='sub_header') History
+          ul(class='build_list')
 
   body
     != body
