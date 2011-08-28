@@ -43,9 +43,10 @@ html, body                                              { background: @canvas ur
 
 .pane.build_details                                     { left: 25% }
 
-.sub_header                                             { padding: 10px 20px; color: @white;
+.sub_header                                             { padding: 9px 20px 11px 20px; color: @white;
   .gradientBar(@grayLight, @gray);
-  text-shadow: 0px 1px 2px fadeout(@black, 90);
+  text-shadow: 0px 1px 2px fadeout(@black, 50%);
+  border-top: 1px solid fadeout(@white, 30%);
 }
 
 input[type="text"].error, input[type="password"].error, textarea.error { border-color: #C87872;
@@ -118,7 +119,10 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
   opacity: 0.3; 
 }
 
-.show_add_new_repo                                      { display: inline-block; margin: 10px; cursor: pointer; position: absolute; bottom: -20px; left: 40px; }
+.show_add_new_repo                                      { display: inline-block; margin: 10px; cursor: pointer; position: absolute; bottom: -18px; left: 40px; 
+  font-size: 12px !important;
+  .box-shadow(0 1px 2px fadeout(@black, 50%));
+}
 
 .select_repository                                      { width: 350px; text-align: center; margin: 150px auto; font-size: 20px; color: #aaa; }
 
