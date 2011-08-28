@@ -5,7 +5,27 @@ var Build = Backbone.Model.extend({
     if (attrs._id) { this.id = attrs._id; }
     this.bind("change:receivedAt", this.setLabel, this);
     this.setLabel();
-   },
+
+    if (!this.get("completed")) {
+      this.refreshUntilComplete();
+    }
+
+  },
+
+  refreshUntilComplete: function () {
+    var build = this;
+    var interval = setInterval(function () {
+      if (build.get("completed") || !build.get("running")) {
+        build.trigger("change:completed");
+        clearInterval(interval);
+      }
+      else {
+        build.fetch({success: function () {
+          build.trigger("change");
+        }});
+      }
+    }, 3000);
+  },
 
   setLabel: function () {
     // var label = new Date(this.get("receivedAt")).getTime();
