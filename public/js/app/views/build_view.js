@@ -12,7 +12,7 @@ var BuildView = Backbone.View.extend({
     this.el = $(this.el);
     var tmpl = _.template($("#build_view_template").html(), {
           label: this.model.get("label"),
-          output: this.model.get("output")
+          output: this.parsedOutput()
         }),
         pane = $(".pane.build_details");
 
@@ -25,6 +25,11 @@ var BuildView = Backbone.View.extend({
       $(".pane").append(this.el);
     }
     return this;
+  },
+  
+  parsedOutput: function() {
+    // TODO: parse ansi sequences
+    return this.model.get("output").replace(/\n/g,'<br>');
   }
 
 });
