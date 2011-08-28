@@ -9,6 +9,7 @@
 
 @lightgreen: #efffef;
 @lightred: #ffebeb;
+@lightyellow: #fffcae;
 @failred: rgba(255, 0, 0, 0.75);
 @successgreen: rgba(16, 191, 9, 0.95);
 
@@ -50,7 +51,8 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
 
 .success                                                { background: @lightgreen; }
 .failure                                                { background: @lightred; }
-
+.running                                                { backgound: @lightgreen url(/img/running.gif) no-repeat 0 center }
+.unknown                                                { background: @lightyellow; }
 
 /* =LAYOUT
 ================================================== */
@@ -128,6 +130,6 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
 .build_list .build_list_item:hover                      { color: #000;}
 .build_list .failure                                    { text-shadow: 0 0 5px @failred }
 .build_list .success                                    { text-shadow: 0 0 5px @successgreen }
-.build_list .running                                    { backgound: @lightgreen url(/img/running.gif) no-repeat 0 center }
+.build_list .unknown                                    { text-shadow: 0 0 5px @lightyellow }
 
 .latest_build_results                                   { padding: 20px; }

@@ -44,8 +44,8 @@ var BuildListItemView = Backbone.View.extend({
 
   render: function () {
     var el = this.el = $(this.el);
-    var stateClass = (this.model.get("completed") ? (this.model.get("successful") ? "success" : "failure") : (this.model.get("running") ? "running" : "unknown_state"));
-    el.attr('class', this.className+" "+stateClass);
+    var stateClass = (this.model.get("completed") ? (this.model.get("successful") ? "success" : "failure") : (this.model.get("running") ? "running" : "unknown"));
+    el.addClass(stateClass);
     el.html(this.model.get("receivedAt"));
     return this;
   },
@@ -69,8 +69,9 @@ var LatestBuildView = Backbone.View.extend({
 
   render: function () {
     var el = this.el = $(this.el);
-    this.el.addClass("success");
-    this.el.html(this.model.get("receivedAt"));
+    var stateClass = (this.model.get("completed") ? (this.model.get("successful") ? "success" : "failure") : (this.model.get("running") ? "running" : "unknown"));
+    el.addClass(stateClass);
+    el.html(this.model.get("receivedAt"));
     return this;
   }
 });
