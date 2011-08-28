@@ -16,12 +16,7 @@ var RepositoryView = Backbone.View.extend({
     var el = $(".pane"),
         frag = $(_.template($("#repository_show_template").html(), {name: this.model.get("name")}));
 
-    if (this.model.isSuccessful) {
-      frag.find(".build_result").addClass("success");
-    }
-    else {
-      frag.find(".build_result").addClass("failure");
-    }
+    frag.find(".build_result").addClass(this.model.status());
 
     if (el.length === 0) {
       el = this.el = $(this.el);

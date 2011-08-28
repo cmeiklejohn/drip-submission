@@ -59,12 +59,12 @@ var Repository = Backbone.Model.extend({
     return _.clone({"repository" : this.attributes})
   },
   
-  isSuccessful: function () {
-    var successful = false;
+  status: function () {
+    var status = "unknown";
     if (this.get("buildList")) {
-      successful = (this.get("buildList").at(0).status() === "successful");
+      status = this.get("buildList").at(0).status();
     }
-    return successful;
+    return status;
   }
 
 });
