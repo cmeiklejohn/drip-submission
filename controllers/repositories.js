@@ -15,6 +15,9 @@ module.exports.create = function(request, response) {
   repos.ownerName     = repos.owner.name;
   delete repos.owner;
 
+  // Sanitize the url.
+  repos.url           = repos.url.replace('.git', '');
+
   console.log("Received a post from:", repos.url);
 
   var createRepository = require('../lib/repositories.js').createRepository;
