@@ -48,7 +48,6 @@ var BuildListItemView = Backbone.View.extend({
   },
 
   render: function () {
-    console.log("render item");
     var el = this.el = $(this.el);
     el.prop("className", "build_list_item");
     el.addClass(this.model.status());
