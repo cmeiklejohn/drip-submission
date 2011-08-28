@@ -26,7 +26,7 @@ module.exports.show = function (request, response) {
     redis.lrange("builds:" + build.id, 0, -1, function(err, output) {
       if (err) throw err;
 
-      console.log("Retrieved output from redis for build log: " + output);
+      console.log("Retrieved output from redis for build log!");
 
       build.output = output;
 
