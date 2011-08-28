@@ -8,7 +8,8 @@ var Build = Backbone.Model.extend({
    },
 
   setLabel: function () {
-    var label = new Date(this.get("receivedAt")).getTime();
+    // var label = new Date(this.get("receivedAt")).getTime();
+    var label = this.get("_id");
     this.set({"label": label}, {silent: true});
   },
   
