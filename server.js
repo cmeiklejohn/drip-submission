@@ -33,7 +33,7 @@ app.configure('production', function(){
                             port:     6379,
                             password: ''},
                           mongohq:{
-                            url:      "mongodb://drip:drip2011@staff.mongohq.com:10075/drip"
+                            url:      "mongodb://localhost/drip"
                           }
                         });
 });
