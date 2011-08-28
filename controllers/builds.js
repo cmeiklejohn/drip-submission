@@ -28,7 +28,7 @@ module.exports.show = function (request, response) {
 
       console.log("Retrieved output from redis for build log!");
 
-      build.output = output;
+      build.output = output.join('');
 
       response.send(build);
     });
