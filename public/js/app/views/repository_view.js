@@ -3,7 +3,9 @@ var RepositoryView = Backbone.View.extend({
   tagName: 'div',
   className: 'pane',
 
-  events: {},
+  events: {
+    'click #show_add_new_repo' : 'showAdd'
+  },
 
   initialize: function () {
     _.bindAll(this);
@@ -37,6 +39,10 @@ var RepositoryView = Backbone.View.extend({
     }
 
     return this;
+  },
+  
+  showAdd: function() {
+    appRouter.navigate("/repositories/new", true);
   }
 
 });

@@ -4,7 +4,8 @@ var AddRepositoryView = Backbone.View.extend({
   className: "add_repository",
 
   events: {
-    "submit #add_repo_form": "save"
+    "submit #add_repo_form": "save",
+    "focus .repository_url_input": "focusInput"
   },
 
   initialize: function () {
@@ -55,6 +56,14 @@ var AddRepositoryView = Backbone.View.extend({
     this.$(".repository_url_input").removeClass("error");
     errorMessageNode.html("");
     errorMessageNode.hide();
+  },
+  
+  focusInput: function () {
+    var input = this.$(".repository_url_input");
+    
+    if(input.val() === input.attr('placeholder')) {
+      input.val('');
+    }
   }
 
 });

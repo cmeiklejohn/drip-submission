@@ -26,7 +26,7 @@ html(lang="en")
 
     script(type="text/template", id="add_repository_tmpl")
       form(method='post', action='/repositories', id='add_repo_form')
-        input(type="text", class="xlarge repository_url_input", value="http://github.com/visionmedia/jade")
+        input(type="text", class="xlarge repository_url_input", value="http://github.com/visionmedia/jade", placeholder="http://github.com/visionmedia/jade")
         input(type="submit",class="btn primary large add",value="Run 'em, Danno!")
         div(class="error_message")
         h2 Drip is continuous integration for node.js.
@@ -37,6 +37,8 @@ html(lang="en")
     script(type="text/template", id="repository_list_template")
       aside(class="repository_list")
         ul
+        a(id="show_add_new_repo") Add new repo
+        
       div(class="pane") 
         div(class="select_repository") Please select a repository on the left
 
