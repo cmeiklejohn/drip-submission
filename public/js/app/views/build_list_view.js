@@ -36,6 +36,8 @@ var BuildListItemView = Backbone.View.extend({
   tagName: 'li',
   className: 'build_list_item',
 
+  events: {"click": "show"},
+
   initialize: function () {
     _.bindAll(this);
   },
@@ -44,6 +46,12 @@ var BuildListItemView = Backbone.View.extend({
     var el = this.el = $(this.el);
     el.html(this.model.get("_id"));
     return this;
+  },
+
+  show: function () {
+    $(".pane").append(new BuildView({
+      model: this.model
+    }).render().el);
   }
 
 });
