@@ -60,7 +60,7 @@ var Repository = Backbone.Model.extend({
   },
   
   isSuccessful: function () {
-    var successful = true;
+    var successful = false;
     if (this.get("buildList")) {
       successful = (this.get("buildList").at(0).status() === "successful");
     }
