@@ -3,7 +3,7 @@ var redis = require('redis'),
 
 var client = redis.createClient(
   app.set('credentials').redistogo.port,
-  'carp.redistogo.com'
+  app.set('credentials').redistogo.host
 );
 
 client.auth(app.set('credentials').redistogo.password, function(err) {
