@@ -5,7 +5,7 @@ var Repository = Backbone.Model.extend({
 
   initialize: function (attrs) {
     if (attrs.name) { this.id = attrs.name; }
-    this.bind("change:builds", this.setupBuildList, this);
+    this.bind("change", this.setupBuildList, this);
   },
 
   setupBuildList: function () {

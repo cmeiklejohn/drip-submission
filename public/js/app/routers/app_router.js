@@ -32,28 +32,29 @@ var AppRouter = Backbone.Router.extend({
   },
 
   repositoriesList: function (ownerName) {
-    this.beforeFilter(ownerName);
+    this.beforeFilter();
   },
 
   repositoriesShow: function (ownerName, name) {
-    this.beforeFilter(ownerName);
+    this.beforeFilter();
 
     var repository      = new Repository({ownerName: ownerName, name: name}),
         repositoryView  = new RepositoryView({model: repository});
         
-    repository.fetch({success: function () {
-      repository.trigger("change");
-    }});
+    repository.fetch();
   },
   
   buildShow: function (ownerName, name, id) {
-    this.beforeFilter(ownerName); // This method doesn't take a param... ?
-    
-    var build      = new Build({ownerName: ownerName, name: name, id: id}),
+    this.beforeFilter();
+
+    var repository      = new Repository({ownerName: ownerName, name: name}),
+        repositoryView  = new RepositoryView({model: repository});
+        
+    repository.fetch();
+
+    var build      = new Build({_id: id, repository: {ownerName: ownerName, name: name} }),
         buildView  = new BuildView({model: build});
         
-    build.fetch({success: function () {
-      build.trigger("change");
-    }});
+    build.fetch();
   }
 });
