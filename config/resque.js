@@ -7,4 +7,4 @@ module.exports = resque.connect({
   password: app.set('credentials').redistogo.password
 });
 
-console.log('Connected to Redis To Go');
+console.log('Connected to Redis');

@@ -16,7 +16,7 @@ client.on("error", function (err) {
 });
 
 client.on("connect", function (err) {
-  console.log('Connected to Redis To Go');
+  console.log('Connected to Redis');
 });
 
 module.exports = client;
