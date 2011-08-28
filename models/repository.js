@@ -17,6 +17,8 @@ module.exports.Repository = mongoose.model('Repository', module.exports.Reposito
 module.exports.Repository.prototype.toJSON = function toJSON () { 
   var obj = this.toObject(); 
 
+  obj.builds = obj.builds.reverse();
+
   obj.builds.forEach(function(item) { 
     if(item.receivedAt) { 
       item.receivedAt = item.receivedAt.toFormat('YYYY/MM/DD HH:MI:SS');
