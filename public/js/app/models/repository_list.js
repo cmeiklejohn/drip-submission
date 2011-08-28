@@ -1,4 +1,6 @@
 var RepositoryList = Backbone.Collection.extend({
+  model: Repository,
+
   url: '/repositories',
 
   initialize: function () {

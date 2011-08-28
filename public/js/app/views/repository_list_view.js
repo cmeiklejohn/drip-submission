@@ -40,7 +40,7 @@ var RepositoryListView = Backbone.View.extend({
 
 var RepositoryListItemView = Backbone.View.extend({
   tagName: 'li',
-  className: 'repository_list_item',
+  className: 'repository_list_item clearfix',
 
   events: {
     "click": "show"
@@ -52,8 +52,8 @@ var RepositoryListItemView = Backbone.View.extend({
   },
 
   render: function () {
-    $(this.el).html(this.model.get("name"));
-    $(this.el).data("");
+    $(this.el).html(this.model.get("name") + "<span class='build_result'></span>");
+    $(this.el).addClass(this.model.status());
     return this;
   },
 

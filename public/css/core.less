@@ -119,7 +119,15 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
   opacity: 0.3; 
 }
 
+
 .repository_list ul li.current                          { background: fadeout(@black, 80%); color: @white; border-top: 1px solid fadeout(@black, 80%);  }
+
+.repository_list ul li .build_result                    { float: right; width: 16px; height: 16px; margin-right: 10px; display: none; }
+.repository_list ul li.success  .build_result           { background: url(/img/success_icon.png); }
+.repository_list ul li.failure  .build_result           { background: url(/img/failed_icon.png); }
+.repository_list ul li.running  .build_result           { background: url(/img/running.gif); }
+.repository_list ul li.unknown  .build_result           { background: url(/img/unknown_icon.png); }
+
 
 .show_add_new_repo                                      { display: inline-block; margin: 10px; cursor: pointer; position: absolute; bottom: -18px; left: 40px; 
   font-size: 12px !important;
