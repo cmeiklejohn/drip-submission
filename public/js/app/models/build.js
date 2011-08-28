@@ -21,10 +21,9 @@ var Build = Backbone.Model.extend({
       }
       else {
         build.fetch({success: function () {
-          build.trigger("change");
         }});
       }
-    }, 3000);
+    }, 2000);
   },
 
   setLabel: function () {

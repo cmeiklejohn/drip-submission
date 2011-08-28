@@ -15,22 +15,17 @@ var BuildView = Backbone.View.extend({
           label: this.model.get("label"),
           output: this.parsedOutput()
         })),
-        pane = $(".pane.build_details");
+        outputNode;
 
     tmpl.find(".build_result").addClass(this.model.status());
 
     this.el.html(tmpl);
 
-    if (pane.length > 0) {
-      pane.replaceWith(this.el);
-    }
-    else {
-      $(".pane").append(this.el);
-    }
+    $(".pane.build_details").remove();
+    $(".pane").append(this.el);
 
-    var objDiv = $(".build_output").get(0);
-    objDiv.scrollTop = objDiv.scrollHeight;
-    
+    outputNode = this.el.find(".build_output");
+    outputNode.prop({ scrollTop: outputNode.prop("scrollHeight") });
 
     return this;
   },
