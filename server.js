@@ -17,6 +17,7 @@ app.configure(function(){
 app.configure('test', 'development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
   app.set('credentials',{redistogo:{
+                            host: 'carp.redistogo.com',
                             password: "af6ea3b7ae7aa630dcb710285fb637a1",
                             port:     9107},
                           mongohq:{
@@ -28,8 +29,9 @@ app.configure('test', 'development', function(){
 app.configure('production', function(){
   app.use(express.errorHandler()); 
   app.set('credentials',{redistogo:{
-                            password: "dd710384790cdf4fef0587a24fafb7e3",
-                            port:     9227},
+                            host:     "localhost",
+                            port:     6379,
+                            password: ''},
                           mongohq:{
                             url:      "mongodb://drip:drip2011@staff.mongohq.com:10075/drip"
                           }
