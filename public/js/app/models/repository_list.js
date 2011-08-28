@@ -1,3 +1,1 @@
-var RepositoryList = Backbone.Collection.extend({
-  url: '/repositories'
-});
+var RepositoryList = Backbone.Collection.extend({url: '/repositories'});

@@ -55,14 +55,12 @@ var BuildListItemView = Backbone.View.extend({
   },
 
   show: function () {
-    appRouter.navigate("/" + this.model.get("ownerName") + "/" + this.model.get("name") + "/" + this.model.id);
+    appRouter.navigate("/" + this.model.get("repository").ownerName + "/" + this.model.get("repository").name + "/" + this.model.id);
     
     var build = new Build(this.model.attributes);
     new BuildView({model: build});
         
-    build.fetch({success: function () {
-      build.trigger("change");
-    }});
+    build.fetch();
   }
 
 });

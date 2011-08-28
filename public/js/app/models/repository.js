@@ -1,11 +1,33 @@
 var Repository = Backbone.Model.extend({
+  defaults: { buildList: null },
+
+  urlRoot: '/repositories',
 
   initialize: function (attrs) {
     if (attrs.name) { this.id = attrs.name; }
-
+    this.bind("change:builds", this.setupBuildList, this);
   },
 
-  urlRoot: '/repositories',
+  setupBuildList: function () {
+    var repo = this,
+        builds = repo.get("builds"),
+        bl;
+
+    if (!this.get("buildList") && builds && builds.length > 0) { 
+      bl = new BuildList();
+
+      // enrich builds with repository meta data
+      _.each(builds, function (b) {
+        b.repository = {
+          name: repo.get("name"),
+          ownerName: repo.get("ownerName")
+        };
+        bl.add(new Build(b))
+      });
+
+      this.set({buildList: bl}, {silent:true});
+    }
+  },
 
   validate: function (attrs) {
     if (!attrs.url) {

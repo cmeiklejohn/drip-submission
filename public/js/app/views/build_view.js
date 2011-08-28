@@ -10,6 +10,7 @@ var BuildView = Backbone.View.extend({
 
   render: function () {
     var el = this.el = $(this.el);
+    $(".pane").append(this.el);
     return this;
   }
 
