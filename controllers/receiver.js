@@ -11,8 +11,8 @@ module.exports.receive = function (request, response) {
 
   console.log("Post received with payload" + request.body.payload);
 
-  var branch          = payload.ref.replace('refs/heads/', '');
   var payload         = JSON.parse(request.body.payload);
+  var branch          = payload.ref.replace('refs/heads/', '');
   var repos           = payload.repository;
   repos.ownerName     = repos.owner.name;
   delete repos.owner;
