@@ -11,6 +11,7 @@ module.exports.receive = function (request, response) {
 
   console.log("Post received with payload" + request.body.payload);
 
+  var branch          = payload.ref.replace('refs/heads/', '');
   var payload         = JSON.parse(request.body.payload);
   var repos           = payload.repository;
   repos.ownerName     = repos.owner.name;
@@ -18,8 +19,8 @@ module.exports.receive = function (request, response) {
 
   console.log("Received a post from:", repos.url);
 
-  var createRepository = require('../lib/repositories.js').createRepository;
-  createRepository(repos, function() { 
+  var createRepositoryAndTriggerBuild = require('../lib/repositories.js').createRepositoryAndTriggerBuild;
+  createRepositoryAndTriggerBuild(repos, branch, function() { 
     response.send("OK");
   });
 };

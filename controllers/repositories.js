@@ -11,6 +11,8 @@ module.exports.create = function(request, response) {
 
   console.log("creating from request.body:", JSON.stringify(request.body));
 
+  // Assume master branch for supplied repository.
+  var branch          = "master";
   var repos           = request.body.repository;
   repos.ownerName     = repos.owner.name;
   delete repos.owner;
@@ -26,8 +28,8 @@ module.exports.create = function(request, response) {
   console.log("Received a post from:", repos.url);
   console.log("Received build request for: " + repos.ownerName + "/" + repos.name);
 
-  var createRepository = require('../lib/repositories.js').createRepository;
-  createRepository(repos, function() { 
+  var createRepositoryAndTriggerBuild = require('../lib/repositories.js').createRepositoryAndTriggerBuild;
+  createRepositoryAndTriggerBuild(repos, branch, function() { 
     response.send("OK");
   });
 };

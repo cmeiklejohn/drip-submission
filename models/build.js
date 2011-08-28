@@ -9,6 +9,7 @@ module.exports.BuildSchema = new Schema({
   receivedAt: { type: Date, default: Date.now },
   startedAt:  { type: Date },
   finishedAt: { type: Date },
+  branch:     { type: String, default: "master" },
   output:     { type: String }
 });
 

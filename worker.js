@@ -56,9 +56,19 @@ var Jobs = {
         var name = 'clone';
         console.log("cloning ["+repository.url+"]...");
         cmds[name] = spawn('git', ['clone',repository.url, workingDir], {cwd: workingDir, setsid: false});
-        cmdOut.bind(name, spawnNpmInstall);
+        cmdOut.bind(name, spawnCheckout);
       };
       
+      // Checkout..
+      // setsid: true is giving me "Operation not permitted"
+      // do we actually need it though? unclear about clobbering previous sessions...
+      var spawnCheckout = function(){
+        var name = 'checkout';
+        console.log("checkout ["+build.branch+"]...");
+        cmds[name] = spawn('git', ['checkout',build.branch], {cwd: workingDir, setsid: false});
+        cmdOut.bind(name, spawnNpmInstall);
+      };
+
       // Setup the environment
       var spawnNpmInstall = function(){
         var name = 'npm_install';
