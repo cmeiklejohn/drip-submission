@@ -9,7 +9,7 @@ module.exports.create = function(request, response) {
     return;
   }
 
-  console.log(JSON.stringify(request.body));
+  console.log("creating from request.body:", JSON.stringify(request.body));
 
   var repos           = request.body.repository;
   repos.ownerName     = repos.owner.name;

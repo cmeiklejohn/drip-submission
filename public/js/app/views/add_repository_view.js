@@ -34,13 +34,10 @@ var AddRepositoryView = Backbone.View.extend({
       input.addClass("error");
     });
 
-    // https://github.com/visionmedia/jade.git
-    this.model.save({repository:{
-                       url: url,
-                       name: name,
-                       owner:{name: ownerName},
-                       
-                    }});
+    this.model.save({url: url,
+                    name: name,
+                    owner:{name: ownerName},
+                   });
   },
 
   reset: function () {
