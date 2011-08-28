@@ -2,10 +2,11 @@ var AppRouter = Backbone.Router.extend({
 
   routes: {
     "": "root",
-    "/repositories/new":  "repositoriesAdd",
-    "/repositories":      "repositoriesList",
-    "/:ownerName/":       "repositoriesList",
-    "/:ownerName/:name":  "repositoriesShow"
+    "/repositories/new":      "repositoriesAdd",
+    "/repositories":          "repositoriesList",
+    "/:ownerName/":           "repositoriesList",
+    "/:ownerName/:name":      "repositoriesShow",
+    "/:ownerName/:name/:id":  "buildShow"
   },
 
   beforeFilter: function () {
@@ -39,8 +40,20 @@ var AppRouter = Backbone.Router.extend({
 
     var repository      = new Repository({ownerName: ownerName, name: name}),
         repositoryView  = new RepositoryView({model: repository});
+        
     repository.fetch({success: function () {
       repository.trigger("change");
+    }});
+  },
+  
+  buildShow: function (ownerName, name, id) {
+    this.beforeFilter(ownerName); // This method doesn't take a param... ?
+    
+    var build      = new Build({ownerName: ownerName, name: name, id: id}),
+        buildView  = new BuildView({model: build});
+        
+    build.fetch({success: function () {
+      build.trigger("change");
     }});
   }
 });

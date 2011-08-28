@@ -120,16 +120,16 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
 
 /* --- build list view --- */
 .build_list                                             { list-style: none; margin: 0; }
-.build_list .build_list_item                            { padding: 10px 20px; cursor: pointer; 
+.builds .build_list_item                            { padding: 10px 20px; cursor: pointer; 
   .gradientBar(@grayLighter, lighten(@grayLight, 5%));
   color: #333;
   text-shadow: 0px 1px 1px @white;
   border-bottom: 1px solid #aaa; 
   border-top: 1px solid #fff; 
 }
-.build_list .build_list_item:hover                      { color: #000;}
-.build_list .failure                                    { text-shadow: 0 0 5px @failred }
-.build_list .success                                    { text-shadow: 0 0 5px @successgreen }
-.build_list .unknown                                    { text-shadow: 0 0 5px @lightyellow }
+.builds .build_list_item:hover                      { color: #000;}
+.builds .failure                                    { text-shadow: 0 0 5px @failred }
+.builds .success                                    { text-shadow: 0 0 5px @successgreen }
+.builds .unknown                                    { text-shadow: 0 0 5px @lightyellow }
 
 .latest_build_results                                   { padding: 20px; }

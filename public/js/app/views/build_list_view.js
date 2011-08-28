@@ -10,16 +10,20 @@ var BuildListView = Backbone.View.extend({
     var el = this.el = $(this.el),
         frag = $( $("#build_list_template").html() ),
         latestBuildNode = frag.find(".latest_build"),
-        listNode = frag.find(".build_list");
-
-    var lastestBuildView = new LatestBuildView({
-      model: this.collection.at(0)
-    });
-
-    latestBuildNode.append(lastestBuildView.render().el);
+        listNode = frag.find(".build_list"),
+        latestListNode = listNode.clone();
+        
+    latestBuildNode.append(latestListNode);
 
     _.each(this.collection.toArray(), function (build, i) {
-      if (i === 0) { return }
+      if (i === 0) {
+        latestListNode.append(new BuildListItemView({
+          model: build
+        }).render().el);
+        
+        return;
+      }
+      
       listNode.append(new BuildListItemView({
         model: build
       }).render().el);
@@ -51,27 +55,14 @@ var BuildListItemView = Backbone.View.extend({
   },
 
   show: function () {
-    $(".pane").append(new BuildView({
-      model: this.model
-    }).render().el);
+    appRouter.navigate("/" + this.model.get("ownerName") + "/" + this.model.get("name") + "/" + this.model.id);
+    
+    var build = new Build(this.model.attributes);
+    new BuildView({model: build});
+        
+    build.fetch({success: function () {
+      build.trigger("change");
+    }});
   }
 
-});
-
-// Shouldn't this simply be the first in the BuildList collection?
-var LatestBuildView = Backbone.View.extend({
-  tagName: 'div',
-  className: 'latest_build_results',
-
-  initialize: function () {
-    _.bindAll(this);
-  },
-
-  render: function () {
-    var el = this.el = $(this.el);
-    var stateClass = (this.model.get("completed") ? (this.model.get("successful") ? "success" : "failure") : (this.model.get("running") ? "running" : "unknown"));
-    el.addClass(stateClass);
-    el.html(this.model.get("receivedAt"));
-    return this;
-  }
 });
