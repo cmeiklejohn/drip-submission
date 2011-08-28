@@ -6,14 +6,12 @@ var RepositoryList = Backbone.Collection.extend({
     window.socket.on('repository', function (data) {
       console.log('socket.io received data:' + data);
 
-      console.log(repo._id);
-      console.log(repository);
-
       var repo = data.repository,
-          repository = list.get(repo._id);
-
+          repository = list.find(function (r) {
+            return repo._id === r.get("_id");
+          });
+      
       if (repository) {
-        console.log("found");
         repository.set(repository);
       }
       else {
