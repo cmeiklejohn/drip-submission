@@ -32,14 +32,14 @@ html(lang="en")
       });
 
     script(type="text/template", id="add_repository_tmpl")
+      div(class="main_logo")
+      h2 Drip is continuous integration for node.js.
       form(method='post', action='/repositories', id='add_repo_form')
-        input(type="text", class="xlarge repository_url_input", value="http://github.com/visionmedia/jade", placeholder="http://github.com/visionmedia/jade")
+        input(type="text", class="xlarge repository_url_input", placeholder="http://github.com/visionmedia/jade")
         input(type="submit",class="btn primary large add",value="Run 'em, Danno!")
+        h3 Drop your Github URL in above for a one time build.
         div(class="error_message")
-        h2 Drip is continuous integration for node.js.
-        h3 &middot; Drop your Github URL in above for a one time build.
-        h3 &middot; Setup a GitHub post-receive hook to http://drip.io/receive to build each push! 
-        iframe(src="http://nodeknockout.com/iframe/swipers", frameborder="0", scrolling="no", allowtransparency="true", width="115", height="25")
+        h3 Setup a GitHub post-receive hook to http://drip.io/receive to build each push! 
 
     script(type="text/template", id="repository_list_template")
       aside(class="repository_list")
@@ -73,6 +73,8 @@ html(lang="en")
         <%= output %>
 
   body
+    div(id="nkovote")
+      iframe(src="http://nodeknockout.com/iframe/swipers", frameborder="0", scrolling="no", allowtransparency="true", width="115", height="25")
     != body
 
   script

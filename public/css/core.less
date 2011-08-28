@@ -54,8 +54,9 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
 
 /* =LAYOUT
 ================================================== */
-#main_logo                                              { margin: auto; background: url(/img/driplogo.png) no-repeat; width: 138px; height: 88px; margin-top: 20px;}
+#main_logo                                              { margin: auto; background: url(/img/driplogo.png) no-repeat; width: 138px; height: 88px; margin-top: 20px; }
 #main_content                                           { position: absolute; top: 120px; right: 40px; bottom: 40px; left: 40px; }
+#nkovote                                                { position: absolute; top: 20px; right: 20px; }
 
 /* =STATES
 ================================================== */
@@ -68,11 +69,15 @@ input[type="text"].error, input[type="password"].error, textarea.error { border-
 }
 
 /* --- add repository --- */
-.add_repository                                         { width: 750px; margin: 70px auto; position: relative; }
-.add_repository h1, h2                                  { color: @canvas_foreground; }
-.add_repository h3, h4                                  { color: @grayLight; }
+.add_repository                                         { width: 750px; margin: 0px auto; position: relative; margin-top: -50px; }
+.add_repository .main_logo                              { background: url(/img/driplogo.png) no-repeat; width: 138px; height: 88px; }
+.add_repository h1, h2                                  { color: @canvas_foreground; margin-bottom: 20px;}
+.add_repository h3, h4                                  { color: @gray; line-height: 18px; margin-bottom: 5px; 
+  text-shadow: 0px 1px 2px fadeout(@black, 80%);
+}
 .add_repository form                                    { position: absolute; }
-.add_repository .repository_url_input                   { width: 750px; height: 40px; font-size: 30px;}
+.add_repository .repository_url_input                   { width: 750px; height: 40px; font-size: 30px; margin-bottom: 20px; }
+.add_repository .repository_url_input::-webkit-input-placeholder { padding: 7px; }
 .add_repository .btn.add                                { position: absolute; top: 6px; right: 6px; } 
 .add_repository .error_message                          { display: none; margin-top: -2px; font-size: 16px; color: @canvas_foreground; padding: 10px; text-align: center; 
   background: rgba(255, 0, 0, 0.15);

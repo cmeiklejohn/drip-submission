@@ -13,6 +13,7 @@ var AddRepositoryView = Backbone.View.extend({
   },
 
   render: function () {
+    $("#main_logo").hide();
     $(this.el).html(_.template($("#add_repository_tmpl").html()));
     return this;
   },
@@ -40,8 +41,8 @@ var AddRepositoryView = Backbone.View.extend({
                      owner:{name: ownerName},
                     },
                     {
-                      error: function(model, response){
-                        //errorMessageNode.html("Could not save").show();
+                      error: function(model, response) {
+                        // errorMessageNode.html("Could not save").show();
                         // KLUDGE: why is error being called? :(
                         appRouter.navigate("/" + model.get("owner").name + "/" + model.get("name"), true);
                       },
