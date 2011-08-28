@@ -44,7 +44,9 @@ var BuildListItemView = Backbone.View.extend({
 
   render: function () {
     var el = this.el = $(this.el);
-    el.html(this.model.get("_id"));
+    var stateClass = (this.model.get("completed") ? (this.model.get("successful") ? "success" : "failure") : (this.model.get("running") ? "running" : "unknown_state"));
+    el.attr('class', this.className+" "+stateClass);
+    el.html(this.model.get("receivedAt"));
     return this;
   },
 
@@ -56,6 +58,7 @@ var BuildListItemView = Backbone.View.extend({
 
 });
 
+// Shouldn't this simply be the first in the BuildList collection?
 var LatestBuildView = Backbone.View.extend({
   tagName: 'div',
   className: 'latest_build_results',
@@ -67,7 +70,7 @@ var LatestBuildView = Backbone.View.extend({
   render: function () {
     var el = this.el = $(this.el);
     this.el.addClass("success");
-    this.el.html(this.model.get("_id"));
+    this.el.html(this.model.get("receivedAt"));
     return this;
   }
 });
