@@ -7,7 +7,6 @@ var BuildListView = Backbone.View.extend({
   },
 
   render: function () {
-    console.log("render list");
     var el = this.el = $(this.el),
         frag = $( $("#build_list_template").html() ),
         latestBuildNode = frag.find(".latest_build"),

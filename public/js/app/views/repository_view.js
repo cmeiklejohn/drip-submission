@@ -13,7 +13,6 @@ var RepositoryView = Backbone.View.extend({
   },
 
   render: function () {
-    console.log("render repos view");
     var el = $(".pane"),
         frag = $(_.template($("#repository_show_template").html(), {name: this.model.get("name")}));
 
