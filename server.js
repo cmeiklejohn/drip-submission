@@ -61,10 +61,11 @@ app.post('/receive', Receiver.receive);
 var mongoose = require('./config/mongoose');
 
 var io                = require('socket.io').listen(app),
-    RepositorySchema  = require('./models/repository.js');
+    RepositorySchema  = require('./models/repository.js').RepositorySchema;
 
 io.sockets.on('connection', function(socket) {
   RepositorySchema.pre('save', function(next) {
+    console.log('socket.io sending repository event');
     socket.emit('repository', { 'repository': this }); 
     next();
   });
