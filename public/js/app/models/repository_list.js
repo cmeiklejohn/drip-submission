@@ -15,7 +15,6 @@ var RepositoryList = Backbone.Collection.extend({
         repository.set(repository);
       }
       else {
-        console.log("new");
         list.add(new Repository(repo));
       }
 
